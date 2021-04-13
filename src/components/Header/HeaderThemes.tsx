@@ -9,6 +9,6 @@ const themes = {
     backgroundImage: "",
     backgroundColor: "rgba(0,0,0,0)",
   },
-}
+};
 
 export default themes;

@@ -84,7 +84,7 @@ const mainStyles = makeStyles({
     fontSize: "20px",
     fontFamily: "sans-serif",
     margin: "20px",
-    '&:hover': {
+    "&:hover": {
       textDecoration: "underline dotted",
     },
   },
@@ -92,7 +92,7 @@ const mainStyles = makeStyles({
   description: {
     padding: "20px",
     margin: "20px",
-    //backgroundColor: "rgba(255,255,255,0.4)",
+    // backgroundColor: "rgba(255,255,255,0.4)",
     borderRadius: "10px",
     color: "#1639B4",
   },

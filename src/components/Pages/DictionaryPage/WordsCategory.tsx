@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import Pagination from "@material-ui/lab/Pagination";
 import DictionaryStyles from "./DicrionaryPageStyles";
 import CardOfWord from "./components/CardForWord/CardForWord";
 import API_URL from "../../Constants/constants";
-import Pagination from '@material-ui/lab/Pagination';
 
 type Props = {
     user: any,
@@ -16,9 +16,8 @@ interface ICategory {
   filter: string
 }
 
-
-function getCards(token:string, page:number, sectionId:number, filter:string, userId:number, setCountPages, setListOfWords ) {
-  const url = `${API_URL}users/${userId}/aggregatedWords?group=${sectionId - 1}&page=${page-1}&filter=${filter}&wordsPerPage=20`;
+function getCards(token:string, page:number, sectionId:number, filter:string, userId:number, setCountPages, setListOfWords) {
+  const url = `${API_URL}users/${userId}/aggregatedWords?group=${sectionId - 1}&page=${page - 1}&filter=${filter}&wordsPerPage=20`;
 
   fetch(url, {
     method: "GET",
@@ -27,17 +26,17 @@ function getCards(token:string, page:number, sectionId:number, filter:string, us
       Authorization: `Bearer ${token}`,
     },
   })
-  .then((response) => {
-    if (!response.ok) {
+    .then((response) => {
+      if (!response.ok) {
         throw Error(response.statusText);
-    }
-    return response.json();
-  })
-  .then((jsonData) => {
-    setListOfWords(jsonData !== 0 ? jsonData[0].paginatedResults : []);
-    setCountPages(jsonData[0].totalCount.length !== 0 ? Math.ceil((jsonData[0].totalCount[0].count) / 20) : 0);
-  })
-  .catch((error)=> {console.log(error)});
+      }
+      return response.json();
+    })
+    .then((jsonData) => {
+      setListOfWords(jsonData !== 0 ? jsonData[0].paginatedResults : []);
+      setCountPages(jsonData[0].totalCount.length !== 0 ? Math.ceil((jsonData[0].totalCount[0].count) / 20) : 0);
+    })
+    .catch((error) => { console.log(error); });
 }
 
 const WordsFromCategory: React.FC<Props> = ({ user, section, filter }: ICategory) => {
@@ -58,29 +57,27 @@ const WordsFromCategory: React.FC<Props> = ({ user, section, filter }: ICategory
   const handleChangePagination = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
     return listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} />);
-  }
+  };
 
-  const renderOnePage = () => {
-    return listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} />);
-  }
+  const renderOnePage = () => listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} />);
 
   return (
-    listOfWords ? 
-    <div className={useStyles.cards}>
+    listOfWords
+      ? <div className={useStyles.cards}>
       {
-        countPages === 1 ? renderOnePage() 
-        : countPages > 1 ?
-        <>
-          {renderOnePage()}  
+        countPages === 1 ? renderOnePage()
+          : countPages > 1
+            ? <>
+          {renderOnePage()}
           <div className={useStyles.paginationContainer}>
-            <Pagination  color="primary" defaultPage={0} showFirstButton showLastButton count={countPages} page={page} onChange={handleChangePagination} />
+            <Pagination color="primary" defaultPage={0} showFirstButton showLastButton count={countPages} page={page} onChange={handleChangePagination} />
           </div>
         </>
-        : <div>No items yet.</div>
+            : <div>No items yet.</div>
       }
     </div>
-     : <div>No items yet.</div>
-  )
+      : <div>No items yet.</div>
+  );
 };
 
 export default WordsFromCategory;

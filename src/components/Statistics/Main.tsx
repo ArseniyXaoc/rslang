@@ -7,7 +7,7 @@ const styles = makeStyles({
     width: "100%",
     maxWidth: "1024px",
     margin: "12px auto",
-    padding: "0 12px"
+    padding: "0 12px",
     fontSize: "22px",
   },
 });

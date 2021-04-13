@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -10,10 +10,11 @@ import {
   FormControlLabel, FormGroup, FormLabel, withStyles,
 } from "@material-ui/core";
 import {
-  toggleLang, toggleIsAutoVoice, incrementCountNewWords, decrimentCountNewWords, decrimentCountMaxDailyCards, incrementCountMaxDailyCards,
+  toggleLang, toggleIsAutoVoice, setCountNewWords, setCountMaxDailyCards,
 } from "../../../../../redux/main-settings_reducer";
 import { RootState } from "../../../../../redux/reducer";
 import MainSettingsStyles from "./MainSettingsStyles";
+import API_URL from "../../../../Constants/constants";
 
 const StyledLabel = withStyles({
   root: {
@@ -61,43 +62,53 @@ type Props = {
     isAutoVoice: boolean,
     toggleIsAutoVoice: (value: React.ChangeEvent<HTMLInputElement>) => void,
     countNewWords: number,
-    incrementCountNewWords: (value: number) => void,
-    decrimentCountNewWords: (value: number) => void,
+    setCountNewWords: (value: number) => void,
     countMaxDayCards: number,
-    incrementCountMaxDailyCards: (value: number) => void,
-    decrimentCountMaxDailyCards: (value: number) => void,
+    setCountMaxDailyCards: (value: number) => void,
+    user: any,
+    mainSettings: any
+}
+
+function setUserSettings(url:string, token:string, data:any) {
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+    })
+    .catch((error) => { console.log(error); });
 }
 
 const MainSettings: React.FC<Props> = ({
-  lang, toggleLang, isAutoVoice, toggleIsAutoVoice, countNewWords, incrementCountNewWords, decrimentCountNewWords, countMaxDayCards, incrementCountMaxDailyCards, decrimentCountMaxDailyCards,
+  lang, toggleLang, isAutoVoice, toggleIsAutoVoice, countNewWords, setCountNewWords, countMaxDayCards, setCountMaxDailyCards, user, mainSettings,
 }) => {
   const useStyles = MainSettingsStyles();
-  const [countNewdaylyWords, setCountNewdaylyWords] = useState<number>(countNewWords);
-  const [countMaxCards, setCountMaxCards] = useState<number>(countMaxDayCards);
 
-  const handleChangeSubstractCount = () => {
-    setCountNewdaylyWords(countNewdaylyWords - 1);
-    decrimentCountNewWords(countNewdaylyWords);
-  };
-
-  const handleChangeAddCount = () => {
-    setCountNewdaylyWords(countNewdaylyWords + 1);
-    incrementCountNewWords(countNewdaylyWords);
-  };
-
-  const handleChangeSubstractCountMaxDayCards = () => {
-    setCountMaxCards(countMaxCards - 1);
-    decrimentCountMaxDailyCards(countMaxCards);
-  };
-
-  const handleChangeAddCountMaxDayCards = () => {
-    setCountMaxCards(countMaxCards + 1);
-    incrementCountMaxDailyCards(countMaxCards);
-  };
+  useEffect(() => {
+    const data = {
+      wordsPerDay: countNewWords,
+      optional: {
+        buttonsSettings: mainSettings.buttonsSettings,
+        cardSettings: mainSettings.cardSettings,
+        lang: mainSettings.lang.lang,
+        countMaxDayCards: mainSettings.countMaxDayCards.countMaxDayCards,
+        isAutoVoice: mainSettings.isAutoVoice.isAutoVoice,
+      },
+    };
+    localStorage.setItem("rsLangSettings", JSON.stringify(data));
+    const settingsUrl = `${API_URL}users/${user.id}/settings`;
+    setUserSettings(settingsUrl, user.token, data);
+  }, [lang, isAutoVoice, countNewWords, countMaxDayCards]);
 
   return (
     <div className={useStyles.settingsContainer}>
-      <h1>Настройки</h1>
         <h2>{TEXTS[lang].mainTitle}</h2>
         <div className={useStyles.mainSettingsContainer}>
             <FormControl component="fieldset">
@@ -142,17 +153,17 @@ const MainSettings: React.FC<Props> = ({
                         <div className={useStyles.dailySettings}>
                             <span>{TEXTS[lang].numbersNewWords}</span>
                             <div className={useStyles.dailySettingsBtnGroup}>
-                                <Button className={useStyles.daylySettingsBtn} onClick={handleChangeAddCount}>+</Button>
+                                <Button className={useStyles.daylySettingsBtn} onClick={() => { setCountNewWords(countNewWords - 1); }}>-</Button>
                                 <div>{countNewWords}</div>
-                                <Button className={useStyles.daylySettingsBtn} onClick={handleChangeSubstractCount}>-</Button>
+                                <Button className={useStyles.daylySettingsBtn} onClick={() => { setCountNewWords(countNewWords + 1); }}>+</Button>
                             </div>
                         </div>
                         <div className={useStyles.dailySettings}>
                             <span>{TEXTS[lang].maxNumberOfCards}</span>
                             <div className={useStyles.dailySettingsBtnGroup}>
-                                <Button className={useStyles.daylySettingsBtn} onClick={handleChangeAddCountMaxDayCards}>+</Button>
+                                <Button className={useStyles.daylySettingsBtn} onClick={() => { setCountMaxDailyCards(countMaxDayCards - 1); }}>-</Button>
                                 <div>{countMaxDayCards}</div>
-                                <Button className={useStyles.daylySettingsBtn} onClick={handleChangeSubstractCountMaxDayCards}>-</Button>
+                                <Button className={useStyles.daylySettingsBtn} onClick={() => { setCountMaxDailyCards(countMaxDayCards + 1); }}>+</Button>
                             </div>
                         </div>
                     </FormGroup>
@@ -164,19 +175,19 @@ const MainSettings: React.FC<Props> = ({
 };
 
 const mapStateToProps = (state:RootState) => ({
+  mainSettings: state.settingsReducer,
   lang: state.settingsReducer.lang.lang,
   isAutoVoice: state.settingsReducer.isAutoVoice.isAutoVoice,
   countNewWords: state.settingsReducer.countNewWords.countNewWords,
   countMaxDayCards: state.settingsReducer.countMaxDayCards.countMaxDayCards,
+  user: state.user,
 });
 
 const mapDispatchToProps = {
   toggleLang,
   toggleIsAutoVoice,
-  decrimentCountNewWords,
-  incrementCountNewWords,
-  incrementCountMaxDailyCards,
-  decrimentCountMaxDailyCards,
+  setCountNewWords,
+  setCountMaxDailyCards,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MainSettings);

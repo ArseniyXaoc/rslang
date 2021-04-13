@@ -43,7 +43,7 @@ function Teaser({ scroll }: { scroll: (page: number) => void }): React.ReactElem
   }
 }
 
-function PromoPage ({ user }: { user: UserType }): React.ReactElement  {
+function PromoPage({ user }: { user: UserType }): React.ReactElement {
   const history = useHistory();
   if (user.id) {
     history.push("/main");
@@ -172,7 +172,7 @@ function PromoPage ({ user }: { user: UserType }): React.ReactElement  {
       </div>
     </div>
   </div>;
-};
+}
 
 const mapStateToProps = (state: RootState) => ({
   user: state.user,

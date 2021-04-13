@@ -209,7 +209,7 @@ const CardForWords: React.FC<Props> = ({cardInfo, lang, buttonsSettings, cardSet
                         </div> : null
                     }
                     {
-                        isStudied === "true" ? 
+                        !isMain && isStudied === "true" ? 
                         <div className={useStyles.cardScore}>
                             <div>{lang === "en" ? "Study result : " : "Результат изучения: "}</div>
                             <div className={useStyles.rightAnswers}>{checkedWord.optional.rightAnswers ? checkedWord.optional.rightAnswers : 0}</div>

@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const textbookStyles = makeStyles({
   textbookSectionContainer: {
@@ -22,7 +22,7 @@ const textbookStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
   },
-  textbookTitle : {
+  textbookTitle: {
     margin: "10px 5px",
     textAlign: "center",
   },

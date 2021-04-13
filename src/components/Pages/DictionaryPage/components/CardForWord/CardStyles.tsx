@@ -105,15 +105,15 @@ const cardStyles = makeStyles({
     fontSize: "20px",
   },
 
-  rightAnswers:{
+  rightAnswers: {
     fontWeight: "bold",
-    color: "green"
+    color: "green",
   },
 
-  wrongAnswers:{
+  wrongAnswers: {
     fontWeight: "bold",
-    color: "red"
-}
+    color: "red",
+  },
 
 });
 

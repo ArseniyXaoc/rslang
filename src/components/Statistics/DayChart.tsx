@@ -4,9 +4,7 @@ import "chartjs-adapter-date-fns";
 
 Chart.register(...registerables);
 
-
 class DayChart extends Component {
-
   constructor(props) {
     console.log(props);
     super(props);
@@ -17,19 +15,20 @@ class DayChart extends Component {
     this.myChart = new Chart(this.chartRef.current, {
       plugins: [{
         beforeDraw(chart) {
-          const ctx = chart.ctx;
-          const chartArea = chart.chartArea;
+          const { ctx } = chart;
+          const { chartArea } = chart;
           ctx.save();
           ctx.fillStyle = "rgb(90, 132, 179)";
           ctx.fillRect(
             chartArea.left,
             chartArea.top,
             chartArea.right - chartArea.left,
-            chartArea.bottom - chartArea.top);
+            chartArea.bottom - chartArea.top,
+          );
           ctx.restore();
         },
       }],
-      type: 'line',
+      type: "line",
       options: {
 
         plugins: {
@@ -46,9 +45,9 @@ class DayChart extends Component {
         },
         scales: {
           x: {
-            type: 'time',
+            type: "time",
             time: {
-              unit: 'day',
+              unit: "day",
             },
             grid: {
               color: "#d4d4d4",
@@ -64,9 +63,9 @@ class DayChart extends Component {
         },
       },
       data: {
-        labels: this.props.dataSet.map(itm => itm.x),
+        labels: this.props.dataSet.map((itm) => itm.x),
         datasets: [{
-          data: this.props.dataSet.map(itm => itm.y),
+          data: this.props.dataSet.map((itm) => itm.y),
           backgroundColor: "#fff",
           borderColor: "#fff",
         }],
@@ -75,14 +74,14 @@ class DayChart extends Component {
   }
 
   componentDidUpdate() {
-    console.log('update');
+    console.log("update");
     console.log(this.props);
     console.log(this.myChart.data);
     this.myChart.data.datasets.pop();
     this.myChart.data.labels.pop();
-    this.myChart.data.labels = this.props.dataSet.map(itm => itm.x);
+    this.myChart.data.labels = this.props.dataSet.map((itm) => itm.x);
     this.myChart.data.datasets.push({
-      data: this.props.dataSet.map(itm => itm.y),
+      data: this.props.dataSet.map((itm) => itm.y),
       backgroundColor: "#fff",
       borderColor: "#fff",
       borderWidth: 5,

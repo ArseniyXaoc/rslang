@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
@@ -17,6 +17,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { RootState } from "../../../redux/reducer";
 import { signIn, UserType } from "../../../redux/user_reducer";
+import {
+  toggleLang, toggleIsAutoVoice, setCountNewWords, setCountMaxDailyCards,
+} from "../../../redux/main-settings_reducer";
+import { toggleButtonsSettings, toggleCardSetting } from "../../../redux/learning-settings_reducer";
 import API_URL from "../../Constants/constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -73,6 +77,9 @@ function SignIn({ signIn }) {
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
   const [loginResult, setLoginResult] = useState(false);
+  const [userPersonal, setUserPersonal] = useState({});
+  const [userSettings, setUserSettings] = useState([]);
+
   const { register, errors, handleSubmit } = useForm({
     mode: "onTouched",
   });
@@ -96,6 +103,11 @@ function SignIn({ signIn }) {
           token: authData.token,
           refreshToken: authData.refreshToken,
         });
+        setUserPersonal({
+          ...userData,
+          token: authData.token,
+          refreshToken: authData.refreshToken,
+        });
         setLoginResult({
           success: `hello ${userData.email}`,
         });
@@ -112,6 +124,36 @@ function SignIn({ signIn }) {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    const settingsUrl = `${API_URL}users/${userPersonal.id}/settings`;
+
+    const getSettings = async () => {
+      const userSettingsData = await fetch(settingsUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userPersonal.token}`,
+        },
+      });
+
+      if (userSettingsData.ok) {
+        const data = await userSettingsData.json();
+        if (data) {
+          setCountNewWords(data.wordsPerDay);
+          toggleLang(data.optional.lang);
+          toggleIsAutoVoice(data.optional.isAutoVoice);
+          setCountMaxDailyCards(data.optional.countMaxDayCards);
+          toggleCardSetting(data.optional.cardSettings.cardSettings);
+          toggleButtonsSettings(data.optional.buttonsSettings.buttonsSettings);
+        }
+      }
+    };
+
+    if (userPersonal.id) {
+      getSettings();
+    }
+  }, [userPersonal]);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -200,6 +242,12 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = {
   signIn,
+  toggleLang,
+  toggleIsAutoVoice,
+  setCountNewWords,
+  setCountMaxDailyCards,
+  toggleButtonsSettings,
+  toggleCardSetting,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

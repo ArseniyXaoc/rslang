@@ -1,5 +1,7 @@
 import React from "react";
 
+const userLocalSettings = localStorage.getItem("rsLangSettings") ? JSON.parse(localStorage.getItem("rsLangSettings")) : "";
+
 // Language reducer
 const TOGGLE_LANGUAGE = "TOGGLE_LANGUAGE";
 
@@ -8,7 +10,7 @@ export type InitialStateTypeLang = {
 }
 
 const initialStateLang: InitialStateTypeLang = {
-  lang: "ru",
+  lang: userLocalSettings ? userLocalSettings.optional.lang : "ru",
 };
 
 export const settingsReducerLang = (state = initialStateLang, action:any): InitialStateTypeLang => {
@@ -26,10 +28,10 @@ export type ToggleLangActionType = {
     payload: any
 }
 
-export const toggleLang = (lang: React.ChangeEvent<HTMLInputElement>):ToggleLangActionType => ({
+export const toggleLang = (lang:any):ToggleLangActionType => ({
   type: TOGGLE_LANGUAGE,
-  value: lang.target.value,
-  payload: lang.target.value,
+  value: lang.target ? lang.target.value : lang,
+  payload: lang.target ? lang.target.value : lang,
 });
 
 // Automatic voice preview
@@ -41,7 +43,7 @@ export type InitialStateTypeIsAutoVoice = {
 }
 
 const initialStateIsAutoVoice: InitialStateTypeIsAutoVoice = {
-  isAutoVoice: true,
+  isAutoVoice: userLocalSettings ? userLocalSettings.optional.isAutoVoice : true,
 };
 
 export const settingsReducerAutoVoice = (state = initialStateIsAutoVoice, action: any): InitialStateTypeIsAutoVoice => {
@@ -61,90 +63,72 @@ export type ToggleIsAutoVoiceActionType = {
 
 export const toggleIsAutoVoice = (isAutoVoice: React.ChangeEvent<HTMLInputElement>):ToggleIsAutoVoiceActionType => ({
   type: TOGGLE_ISAUTOVOICE,
-  value: isAutoVoice.target.checked,
-  payload: isAutoVoice.target.checked,
+  value: isAutoVoice.target ? isAutoVoice.target.checked : isAutoVoice,
+  payload: isAutoVoice.target ? isAutoVoice.target.checked : isAutoVoice,
 });
 
 // Change count daily learning words
 
-const INCREMENT_COUNTNEWWORDS = "INCREMENT_COUNTNEWWORDS";
-const DECREMENT_COUNTNEWWORDS = "DECREMENT_COUNTNEWWORDS";
+const SET_COUNTNEWWORDS = "SET_COUNTNEWWORDS";
 
 export type InitialStateTypeCountNewWords = {
     countNewWords: number
 }
 
 const initialStateCountNewWords: InitialStateTypeCountNewWords = {
-  countNewWords: 10,
+  countNewWords: userLocalSettings ? userLocalSettings.wordsPerDay : 10,
 };
 
 export const settingsReducerCountNewWords = (state = initialStateCountNewWords, action: any): InitialStateTypeCountNewWords => {
   switch (action.type) {
-    case INCREMENT_COUNTNEWWORDS:
-      return { ...state, countNewWords: action.value + 1 };
-    case DECREMENT_COUNTNEWWORDS:
-      return { ...state, countNewWords: action.value - 1 };
+    case SET_COUNTNEWWORDS:
+      return { ...state, countNewWords: action.value };
 
     default: return state;
   }
 };
 
 export type ToggleCountNewWordsActionType = {
-    type: typeof INCREMENT_COUNTNEWWORDS | typeof DECREMENT_COUNTNEWWORDS,
+    type: typeof SET_COUNTNEWWORDS,
     value: any,
     payload: any
 }
 
-export const incrementCountNewWords = (countNewWords: number):ToggleCountNewWordsActionType => ({
-  type: INCREMENT_COUNTNEWWORDS,
-  value: countNewWords,
-  payload: countNewWords,
-});
-
-export const decrimentCountNewWords = (countNewWords: number):ToggleCountNewWordsActionType => ({
-  type: DECREMENT_COUNTNEWWORDS,
+export const setCountNewWords = (countNewWords: number):ToggleCountNewWordsActionType => ({
+  type: SET_COUNTNEWWORDS,
   value: countNewWords,
   payload: countNewWords,
 });
 
 // Change count daily cards
 
-const INCREMENT_COUNTDAILYCARDS = "INCREMENT_COUNTDAILYCARDS";
-const DECREMENT_COUNTDAILYCARDS = "DECREMENT_COUNTDAILYCARDS";
+const SET_COUNTDAILYCARDS = "SET_COUNTDAILYCARDS";
 
 export type InitialStateTypeCountMaxDailyCards = {
     countMaxDayCards: number
 }
 
 const initialStateCountMaxDailyCards: InitialStateTypeCountMaxDailyCards = {
-  countMaxDayCards: 10,
+  countMaxDayCards: userLocalSettings ? userLocalSettings.optional.countMaxDayCards : 10,
 };
 
 export const settingsReducerCountMaxDailyCards = (state = initialStateCountMaxDailyCards, action: any): InitialStateTypeCountMaxDailyCards => {
   switch (action.type) {
-    case INCREMENT_COUNTDAILYCARDS:
-      return { ...state, countMaxDayCards: action.value + 1 };
-    case DECREMENT_COUNTDAILYCARDS:
-      return { ...state, countMaxDayCards: action.value - 1 };
+    case SET_COUNTDAILYCARDS:
+      return { ...state, countMaxDayCards: action.value };
 
     default: return state;
   }
 };
 
 export type ToggleCountMaxDailyCardsActionType = {
-    type: typeof INCREMENT_COUNTDAILYCARDS | typeof DECREMENT_COUNTDAILYCARDS,
+    type: typeof SET_COUNTDAILYCARDS,
     value: any,
     payload: any
 }
 
-export const incrementCountMaxDailyCards = (countMaxDayCards: number):ToggleCountMaxDailyCardsActionType => ({
-  type: INCREMENT_COUNTDAILYCARDS,
-  value: countMaxDayCards,
-  payload: countMaxDayCards,
-});
-
-export const decrimentCountMaxDailyCards = (countMaxDayCards: number):ToggleCountMaxDailyCardsActionType => ({
-  type: DECREMENT_COUNTDAILYCARDS,
+export const setCountMaxDailyCards = (countMaxDayCards: number):ToggleCountMaxDailyCardsActionType => ({
+  type: SET_COUNTDAILYCARDS,
   value: countMaxDayCards,
   payload: countMaxDayCards,
 });

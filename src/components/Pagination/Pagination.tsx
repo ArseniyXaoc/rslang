@@ -15,8 +15,7 @@ const useStyles = makeStyles((theme) =>
         marginTop: theme.spacing(2),
       },
     },
-  },
-}));
+  }));
 
 export default function PaginationLink({page, sectionId}) {
   const classes = useStyles();

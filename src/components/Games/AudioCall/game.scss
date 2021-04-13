@@ -1,0 +1,130 @@
+*:fullscreen{
+  background-color: white;
+}
+
+.media-content{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.canvas1{
+  width: 300px;
+  height: 300px;
+  z-index: 1;
+  // filter: blur(1px) contrast(40);
+}
+
+
+.backgeound-image{
+  position: absolute;
+  display: block;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.background-gradien{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(#e66465, #9198e5);
+}
+
+.audiocall-container{
+  margin: 0 auto;
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.audiocall-words-container{
+  display: flex;
+  overflow: hidden;
+}
+
+.random-words{
+  position: relative;
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  
+  text-transform: capitalize;
+  color: white;
+  z-index: 1;
+}
+
+.go-transform{
+  animation: animate 1.5s;
+}
+
+
+@keyframes animate {
+  0%  {left:0px; top:0px;}
+  50% {left: -800px; top: 0px;}
+  55% {left: -800px; top: -100px;}
+  60% {left: 0px; top: -100px;}
+  100% {left: 0px; top: 0px;}
+}
+
+
+.word-image{
+  margin: 20px auto;
+  width: 200px;
+  height: 200px;
+}
+
+.game-image{
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+
+.random-word{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.random-word:hover{
+  cursor: pointer;
+  background-color: rgba(223, 230, 233, .5);
+}
+
+
+.button-reboot-game{
+  text-align: center;
+  margin: 10px 10px;
+}
+
+.end-game{
+  text-align: center;
+}
+
+.button-play{
+  display: block;
+  margin: 0 auto;
+}
+
+
+.guessed{
+  color: green;
+}
+
+.no-guessed{
+  color: red;
+}
+
+.hide{
+  display: none;
+}

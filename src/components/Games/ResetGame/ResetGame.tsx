@@ -12,7 +12,7 @@ import { RootState } from "../../../redux/reducer";
 import API_URL from "../../Constants/constants";
 
 function ResetGame({
-  user, game, maxSerie, rightAnswers, wrongAnswers, resetgame, gameId
+  user, game, maxSerie, rightAnswers, wrongAnswers, resetgame, gameId,
 }) {
   // console.log(rightAnswers, wrongAnswers);
 

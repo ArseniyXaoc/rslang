@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { RootState } from "../../../redux/reducer";
 import {
-  GAME
+  GAME,
 } from "../../Games/gameSettings";
 
 function BookToGame({

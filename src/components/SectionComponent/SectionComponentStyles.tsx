@@ -1,4 +1,4 @@
-import {makeStyles} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const sectionStyles = makeStyles({
   sectionContainer: {
@@ -46,7 +46,7 @@ const sectionStyles = makeStyles({
     },
     "&:visited": {
       textDecoration: "none",
-    }
+    },
   },
 
 });

@@ -2,7 +2,7 @@ import { Link, CircularProgress } from "@material-ui/core";
 import React, { Fragment, useState, useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { connect } from "react-redux";
-import Typography from '@material-ui/core/Typography';
+import Typography from "@material-ui/core/Typography";
 import { RootState } from "../../redux/reducer";
 import DailyStat from "./DailyStat";
 import DayChart from "./DayChart";
@@ -62,8 +62,8 @@ const getDailyStat = (stat) => {
 };
 
 const getLearnedWordsByDate = (stat) => {
-  const dateStart = new Date(Math.min(...stat.map((itm) => itm.date))).setHours(0, 0, 0, 0); //midnigh of minimal date from stat
-  const dateEnd = (new Date()).setHours(24, 0, 0, 0); //tomorrow midnight
+  const dateStart = new Date(Math.min(...stat.map((itm) => itm.date))).setHours(0, 0, 0, 0); // midnigh of minimal date from stat
+  const dateEnd = (new Date()).setHours(24, 0, 0, 0); // tomorrow midnight
   const dataSet = [];
   let cDate = dateStart;
   while (cDate < dateEnd) {

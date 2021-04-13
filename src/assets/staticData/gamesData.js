@@ -17,7 +17,7 @@ const games = [
     id: "3",
     name: "Sprint",
     image: SprintImg,
-  }
-]
+  },
+];
 
 export default games;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import { connect } from "react-redux";
@@ -8,6 +8,7 @@ import {
 import { RootState } from "../../../../../redux/reducer";
 import { toggleButtonsSettings, toggleCardSetting } from "../../../../../redux/learning-settings_reducer";
 import LearnSettingsStyles from "./LearnSettingsStyles";
+import API_URL from "../../../../Constants/constants";
 
 const BlueCheckbox = withStyles({
   root: {
@@ -45,7 +46,7 @@ const BUTTON_NAME = {
     goodBtn: "«Good» button",
     easyBtn: "«Easy» button",
     deleteBtn: "«Delete» button",
-    recoveryBtn: "Recovery button"
+    recoveryBtn: "Recovery button",
   },
   ru: {
     repeateBtn: "Кнопка «Повторить»",
@@ -53,7 +54,7 @@ const BUTTON_NAME = {
     goodBtn: "Кнопка «Хорошо»",
     easyBtn: "Кнопка «Легко»",
     deleteBtn: "Кнопка «Удалить»",
-    recoveryBtn: "Кнопка «Восстановить»"
+    recoveryBtn: "Кнопка «Восстановить»",
   },
 };
 
@@ -81,7 +82,26 @@ type Props = {
     toggleButtonsSettings: (value: React.ChangeEvent<HTMLInputElement>) => void,
     buttonsSettings: any,
     toggleCardSetting: (value: React.ChangeEvent<HTMLInputElement>) => void,
-    cardSettings: any
+    cardSettings: any,
+    mainSettings: any,
+    user: any
+}
+
+function setUserSettings(url:string, token:string, data:any) {
+  fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+    })
+    .catch((error) => { console.log(error); });
 }
 
 function createCheckboxSettings(checkbox:any, name:string, toggleFunction: (value: React.ChangeEvent<HTMLInputElement>) => void) {
@@ -95,9 +115,27 @@ function createCheckboxSettings(checkbox:any, name:string, toggleFunction: (valu
 }
 
 const LearnWordSettings: React.FC<Props> = ({
-  lang, buttonsSettings, toggleButtonsSettings, cardSettings, toggleCardSetting,
+  lang, buttonsSettings, toggleButtonsSettings, cardSettings, toggleCardSetting, mainSettings, user,
 }) => {
   const useStyles = LearnSettingsStyles();
+
+  useEffect(() => {
+    const data = {
+      wordsPerDay: mainSettings.countNewWords.countNewWords,
+      optional: {
+        buttonsSettings: mainSettings.buttonsSettings,
+        cardSettings: mainSettings.cardSettings,
+        lang: mainSettings.lang.lang,
+        countMaxDayCards: mainSettings.countMaxDayCards.countMaxDayCards,
+        isAutoVoice: mainSettings.isAutoVoice.isAutoVoice,
+      },
+    };
+
+    localStorage.setItem("rsLangSettings", JSON.stringify(data));
+    const settingsUrl = `${API_URL}users/${user.id}/settings`;
+    setUserSettings(settingsUrl, user.token, data);
+  }, [buttonsSettings, cardSettings]);
+
   return (
     <div>
         <h2>{TEXTS[lang].mainTitle}</h2>
@@ -129,6 +167,8 @@ const mapStateToProps = (state:RootState) => ({
   lang: state.settingsReducer.lang.lang,
   buttonsSettings: state.settingsReducer.buttonsSettings.buttonsSettings,
   cardSettings: state.settingsReducer.cardSettings.cardSettings,
+  mainSettings: state.settingsReducer,
+  user: state.user,
 });
 
 const mapDispatchToProps = {

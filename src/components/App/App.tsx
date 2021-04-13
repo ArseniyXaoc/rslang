@@ -65,7 +65,7 @@ const App = () => {
             <Route exact path="/">
               <Header theme={"transparent"} />
               <PromoPage />
-              {/*<Link className="link-navigation" to='/games'>games</Link>*/}
+              {/* <Link className="link-navigation" to='/games'>games</Link> */}
             </Route>
             <Route path="/">
               <Header />
@@ -103,7 +103,7 @@ const App = () => {
               <Footer />
             </Route>
           </Switch>
-        </Switch>        
+        </Switch>
       </HashRouter>
     </React.Fragment >
   );

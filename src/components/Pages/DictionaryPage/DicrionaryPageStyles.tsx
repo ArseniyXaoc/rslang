@@ -36,7 +36,7 @@ const dictionaryStyles = makeStyles({
     "&:hover": {
       color: "#3680cb",
       borderBottom: "3px solid #3680cb",
-    }
+    },
   },
 
   dictionaryMenuItemActive: {
@@ -46,7 +46,7 @@ const dictionaryStyles = makeStyles({
     "&:hover": {
       color: "rgb(255, 184, 3)",
       borderBottom: "3px solid rgb(255, 184, 3)",
-    }
+    },
   },
 
   cards: {
@@ -91,7 +91,7 @@ const dictionaryStyles = makeStyles({
     width: "100%",
     display: "flex",
     justifyContent: "center",
-  }
+  },
 });
 
 export default dictionaryStyles;

@@ -1,27 +1,24 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import FavoriteTwoToneIcon from "@material-ui/icons/FavoriteTwoTone";
 
-const LifeCounterGame = ({lifeCounter} : {lifeCounter: number}) => {
-
-  let [res, setRes] = useState([])
+const LifeCounterGame = ({ lifeCounter } : {lifeCounter: number}) => {
+  const [res, setRes] = useState([]);
 
   useEffect(() => {
-    let lifes = [];
+    const lifes = [];
 
-    for(let i = 0; i < lifeCounter; i++) {
+    for (let i = 0; i < lifeCounter; i++) {
       lifes.push(<FavoriteTwoToneIcon key={i} />);
     }
 
-    setRes(lifes)
-  }, [lifeCounter])
-
-
+    setRes(lifes);
+  }, [lifeCounter]);
 
   return (
     <div className="life-counter">
       {...res}
-    </div> 
-  )
-}
+    </div>
+  );
+};
 
 export default LifeCounterGame;

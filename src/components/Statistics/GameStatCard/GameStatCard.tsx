@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import styles from "./GameStatCardStyles";
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import { Grid, Paper } from "@material-ui/core";
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
+import styles from "./GameStatCardStyles";
 import Games from "../../../assets/staticData/gamesData.js";
-
 
 const getPercent = (stat) => Math.round((stat.rightAnswers / (stat.rightAnswers + stat.wrongAnswers)) * 100);
 
