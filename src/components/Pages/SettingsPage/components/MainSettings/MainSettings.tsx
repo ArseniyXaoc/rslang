@@ -96,7 +96,8 @@ const MainSettings: React.FC<Props> = ({
   };
 
   return (
-    <div>
+    <div className={useStyles.settingsContainer}>
+      <h1>Настройки</h1>
         <h2>{TEXTS[lang].mainTitle}</h2>
         <div className={useStyles.mainSettingsContainer}>
             <FormControl component="fieldset">

@@ -24,6 +24,10 @@ export type InitialStateTypeButtons = {
             id: string,
             state: boolean
         },
+        {
+          id: string,
+          state: boolean
+      },
     ]
 }
 
@@ -47,6 +51,10 @@ const initialStateButtons: InitialStateTypeButtons = {
     },
     {
       id: "deleteBtn",
+      state: true,
+    },
+    {
+      id: "recoveryBtn",
       state: true,
     },
   ],

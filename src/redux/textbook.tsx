@@ -3,14 +3,13 @@ export type bookPaginationType = {
   page: number;
 };
 
-const initialStateBook: bookPaginationType ={
+const initialStateBook: bookPaginationType = {
   group: number,
   page: number,
 };
 
 const SET_GROUP = "SET_GROUP";
 const SET_PAGE = "SET_PAGE";
-
 
 export default (state = initialStateBook, action: any) => {
   switch (action.type) {
@@ -27,4 +26,4 @@ export default (state = initialStateBook, action: any) => {
     default:
       return state;
   }
-}
+};

@@ -45,6 +45,7 @@ const BUTTON_NAME = {
     goodBtn: "«Good» button",
     easyBtn: "«Easy» button",
     deleteBtn: "«Delete» button",
+    recoveryBtn: "Recovery button"
   },
   ru: {
     repeateBtn: "Кнопка «Повторить»",
@@ -52,6 +53,7 @@ const BUTTON_NAME = {
     goodBtn: "Кнопка «Хорошо»",
     easyBtn: "Кнопка «Легко»",
     deleteBtn: "Кнопка «Удалить»",
+    recoveryBtn: "Кнопка «Восстановить»"
   },
 };
 

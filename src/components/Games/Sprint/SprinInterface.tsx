@@ -2,20 +2,20 @@ import React, { useEffect, useState } from "react";
 import {
   AccessAlarm, Score, VolumeUp, VolumeOff,
 } from "@material-ui/icons";
-import tada from "../../../assets/sound/tada.mp3";
 import useSound from "use-sound";
+import tada from "../../../assets/sound/tada.mp3";
 
-let int = null;
+// let int = null;
 
 const SprintHeader = ({ isVolume, score, setFinish }:
-  { isVolume: boolean, score: number, finish: React.SetStateAction<boolean> }) => {
+  { isVolume: boolean, score: number, setFinish: React.SetStateAction<boolean> }) => {
   const [playTada] = useSound(tada, { volume: 0.2 });
 
-  const [time, setTime] = useState(100);
+  const [time, setTime] = useState(40);
   const [timeIn, setTimeIn] = useState();
 
   useEffect(() => {
-    int = setInterval(() => {
+    const int = setInterval(() => {
       setTime(time - 1);
     }, 1000);
     setTimeIn(int);
@@ -24,7 +24,10 @@ const SprintHeader = ({ isVolume, score, setFinish }:
       clearInterval(int);
       setFinish(true);
     }
-    return () => clearInterval(int);
+    return () => {
+      clearInterval(int);
+      clearInterval(timeIn);
+    };
   }, [time]);
 
   return (

@@ -1,14 +1,17 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+
 const headerStyles = makeStyles(
   {
-    appBar: {
-      backgroundColor: "#3f51b5",
+    appBar: (theme) => ({
+      backgroundImage: theme.backgroundImage,
+      backgroundColor: theme.backgroundColor,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
       color: "#FFFFFF",
       fontWeight: 700,
       padding: "0",
-
-    },
+    }),
     toolbar: {
       display: "flex",
       flexDirection: "row",
@@ -42,6 +45,7 @@ const headerStyles = makeStyles(
     },
 
     listLinkItem: {
+      width: "auto",
       textDecoration: "none",
       color: "#FFFFFF",
       padding: "10px 0",
@@ -68,7 +72,7 @@ const headerStyles = makeStyles(
     closeButton: {
 
       color: "#fff",
-    // margin: "10px 0",
+      // margin: "10px 0",
     },
   },
 );

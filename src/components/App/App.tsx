@@ -8,6 +8,7 @@ import TeamPage from "../Pages/TeamPage/TeamPage";
 import SignIn from "../Authorization/SignIn";
 import SignUp from "../Authorization/SignUp";
 import UserProfile from "../Authorization/UserProfile";
+import Stat from "../Statistics";
 
 import AudioCall from "../Games/AudioCall/AudioCallDescription";
 import Games from "../Games/Games";
@@ -19,10 +20,10 @@ import TextbookPage from "../Pages/TextbookPage/TextbookPage";
 import appStyles from "./AppStyles";
 import DictionaryPage from "../Pages/DictionaryPage/DictionaryPage";
 import SectionComponent from "../SectionComponent/SectionComponent";
+import MainPage from "../MainPage";
+import PromoPage from "../Promo";
 
-
-
-/*const App = () => {
+/* const App = () => {
   const useStyles = appStyles();
   return (
     <React.Fragment>
@@ -52,66 +53,71 @@ import SectionComponent from "../SectionComponent/SectionComponent";
           </Route> *!/}
         </Switch>
       </HashRouter>
-    </React.Fragment>*/
+    </React.Fragment> */
 
 const App = () => {
   const useStyles = appStyles();
   return (
-
-  <React.Fragment>
-
-    <HashRouter>
-    <Header />
-      <main className={useStyles.content}>
+    <React.Fragment>
+      <HashRouter>
         <Switch>
-          <Route exact path="/">
-            <Header />
-            <Link className="link-navigation" to='/games'>games</Link>
-          </Route>
-          <Route path="/games">
-            <Games />
-          </Route>
-          <Route path="/signin">
-            <SignIn />
-          </Route>
-          <Route path="/signup">
-            <SignUp />
-          </Route>
-          <Route path="/profile">
-            <UserProfile />
-          </Route>
-          <Route path="/section/:sectionId/:pageId" render={props => <TextbookPage {...props.match.params}/>} />
-          <Route path="/section/:sectionId" render={props => <SectionComponent {...props.match.params}/>} />
-          <Route path="/dictionary">
-            <DictionaryPage />
-          </Route>
-          <Route path="/team">
-            <TeamPage />
-          </Route>
-          <Route path="/settings">
-            <SettingsPage />
-          </Route>
-        </Switch>
-      </main>
-
-      <Footer />
-    </HashRouter>
-
-  </React.Fragment>
-
+          <Switch>
+            <Route exact path="/">
+              <Header theme={"transparent"} />
+              <PromoPage />
+              {/*<Link className="link-navigation" to='/games'>games</Link>*/}
+            </Route>
+            <Route path="/">
+              <Header />
+              <main className={useStyles.mainContent}>
+                <Switch>
+                <Route path="/main">
+                    <MainPage />
+                  </Route>
+                  <Route path="/games">
+                    <Games />
+                  </Route>
+                  <Route path="/signin">
+                    <SignIn />
+                  </Route>
+                  <Route path="/signup">
+                    <SignUp />
+                  </Route>
+                  <Route path="/profile">
+                    <UserProfile />
+                  </Route>
+                  <Route path="/section/:sectionId/:pageId" render={(props) => <TextbookPage {...props.match.params} />} />
+                  <Route path="/section/:sectionId" render={(props) => <SectionComponent {...props.match.params} />} />
+                  <Route path="/dictionary/:sectionId/" render={(props) => <DictionaryPage {...props.match.params} />} />
+                  <Route path="/team">
+                    <TeamPage />
+                  </Route>
+                  <Route path="/settings">
+                    <SettingsPage />
+                  </Route>
+                  <Route path="/statistics">
+                    <Stat />
+                  </Route>
+                </Switch>
+              </main>
+              <Footer />
+            </Route>
+          </Switch>
+        </Switch>        
+      </HashRouter>
+    </React.Fragment >
   );
 };
 
 export default App;
 
-
-{/*// render={props =>*/}
-{/*// <SectionComponent {...props.match.params}/>*/}
+{ /* // render={props => */ }
+{ /* // <SectionComponent {...props.match.params}/> */ }
 //   {/*<Switch>
-{/*<Route path={`${path}/:pageId`} component={TextbookPage} />*/}
+{ /* <Route path={`${path}/:pageId`} component={TextbookPage} /> */ }
 // </Switch>*!/}
-// </SectionComponent>*/
+// </SectionComponent> * /
 // {/*<Route path="/:pageId"><TextbookPage/>}<Route/>*/}
 
-{/*<Route path="/section/:sectionId/:pageId" render={props => <TextbookPage {...props.match.params}/>} />*/}
+{ /* <Route path="/section/:sectionId/:pageId" render={props => <TextbookPage {...props.match.params}/>} /> */ }
 /**/

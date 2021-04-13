@@ -11,8 +11,8 @@
   height: 220px;
 }
 
-.content-conteiner{
-  margin-top: 20px;
+.content-container{
+  /*margin-top: 20px;*/
   margin: 0 auto;
   width: 600px;
   display: flex;
@@ -21,6 +21,7 @@
 }
 
 .content{
+  width: 600px;
   display: flex;
   justify-content: space-between;
 }
@@ -43,10 +44,11 @@ h2{
   width: 150px;
   height: 150px;
   border-radius: 4px;
+  object-fit: cover;
 }
 
 .content-container{
-  margin-top: 20px;
+  /*margin-top: 20px;*/
   width: 600px;
   margin: 0 auto;
   display: flex;

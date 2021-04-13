@@ -1,4 +1,3 @@
-
 export type dictItemType = {
   isStudying: boolean;
   isDifficult: boolean;
@@ -8,11 +7,11 @@ export type dictItemType = {
   correct: number;
 };
 
-const initialStateDictionary: dictItemType ={
+const initialStateDictionary: dictItemType = {
   isStudying: false,
   isDifficult: false,
   isDeleted: false,
-  word: '',
+  word: "",
   errors: 0,
   correct: 0,
 };
@@ -24,7 +23,7 @@ const SET_ERRORS = "SET_ERRORS";
 const SET_CORRECT = "SET_CORRECT";
 
 export default (state = initialStateDictionary, action: any) => {
-  switch(action.type) {
+  switch (action.type) {
     case SET_STUDYING:
       return {
         ...state,
@@ -48,9 +47,9 @@ export default (state = initialStateDictionary, action: any) => {
     case SET_CORRECT:
       return {
         ...state,
-        correct: 1 ,
+        correct: 1,
       };
     default:
       return state;
   }
-}
+};

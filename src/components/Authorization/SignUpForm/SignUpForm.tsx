@@ -12,9 +12,11 @@ import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import API_URL from "../../Constants/constants";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
+    // height: "72vh",
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
@@ -71,26 +73,25 @@ export default function SignUpForm() {
   const onSubmit = async (data, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const rawResponse = await fetch("https://rslernwords.herokuapp.com/users", {
+    const rawResponse = await fetch(`${API_URL}users`, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });
     if (rawResponse.ok) {
       history.push("/");
-    }
-    else {
+    } else {
       setSignUpResult({
         error: "This email is already registered",
       });
       setLoading(false);
     }
-    //setLoading(false);
-    //const content = await rawResponse.json();
-    //console.log(content);
+    // setLoading(false);
+    // const content = await rawResponse.json();
+    // console.log(content);
   };
 
   return (

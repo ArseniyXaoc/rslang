@@ -1,6 +1,5 @@
+import React, { useState } from "react";
 
-import React from "react";
-import { useState } from "react";
 import { Link as RouterLink, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useForm } from "react-hook-form";
@@ -18,9 +17,11 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { RootState } from "../../../redux/reducer";
 import { signIn, UserType } from "../../../redux/user_reducer";
+import API_URL from "../../Constants/constants";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
+    // height: "72vh",
     marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
@@ -47,13 +48,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const getUser = async (userId, token) => {
-  const rawResponse = await fetch(`https://rslernwords.herokuapp.com/users/${userId}`, {
+  const rawResponse = await fetch(`${API_URL}users/${userId}`, {
     method: "GET",
     withCredentials: true,
     headers: {
-      "Authorization": `Bearer ${token}`,
-      "Accept": "application/json",
-      "Content-Type": "application/json"
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
   });
   if (rawResponse.ok) {
@@ -78,11 +79,11 @@ function SignIn({ signIn }) {
   const onSubmit = async (data, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const rawResponse = await fetch("https://rslernwords.herokuapp.com/signin", {
+    const rawResponse = await fetch(`${API_URL}signin`, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
+        Accept: "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     });

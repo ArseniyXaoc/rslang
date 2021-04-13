@@ -1,17 +1,25 @@
 import React, {
-  useEffect, useState, useCallback, useRef
+  useEffect, useState, useCallback, useRef,
 } from "react";
 import useSound from "use-sound";
 import { useParams } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import AspectRatioIcon from '@material-ui/icons/AspectRatio';
+import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import { connect } from "react-redux";
+import { Key } from "readline";
+import ResetGame from "../ResetGame/ResetGame";
 import "./sprint.scss";
 import Points from "./Points";
 import SprintHeader from "./SprinInterface";
 import Begin from "./Begin";
 import correct from "../../../assets/sound/correct-choice.wav";
 import wrong from "../../../assets/sound/error.wav";
-import { ERROR, URL, ERROR_WORD, RIGHT_ARROW, RIGHT } from "./sprintconstants";
+import {
+  ERROR, ERROR_WORD, RIGHT_ARROW, RIGHT, DICTIONARY, Buttons,
+  IButtons, GAME_ID, LEFT_ARROW,
+} from "./sprintconstants";
+import { RootState } from "../../../redux/reducer";
+import API_URL from "../../Constants/constants";
 
 const random = (max: number): number => {
   const min = 0;
@@ -20,99 +28,189 @@ const random = (max: number): number => {
 };
 
 interface ICurrentWord {
-  mainWord: string,
-  translateWord: string,
+  word: string,
+  checkTranslate: string,
+  wordTranslate: string,
   isTrueTranslate: boolean,
+  id?: string,
+  _id?: string,
+  audio: string,
 }
 
+interface IWordData {
+  word: string,
+  checkTranslate: string,
+  wordTranslate: string,
+  id: string | undefined,
+  isTrueTranslate: boolean,
+  audio: string,
+}
 
-export default function Sprint() {
-  const params: { num: string | undefined } = useParams();
+function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: any, token: any }, lang: any }) {
+  const { difficulty, page }: { difficulty: string, page: string } = useParams();
+  let pageCounter: number = Number(page);
   const sprintEl = useRef(null);
-  const [words, setWords] = useState<Promise<any>>();
+  const [words, setWords] = useState<Promise<{}[]>>();
   const [errorFetch, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [score, setScore] = useState(0);
-  const [checkbox, setCheckbox] = useState([]);
+  const [checkbox, setCheckbox] = useState<boolean[]>([]);
   const [bonus, setBonus] = useState(10);
   const [finish, setFinish] = useState(false);
   const [begin, setBegin] = useState(true);
   const [playCorrect] = useSound(correct);
   const [playWrong] = useSound(wrong);
-  const { num } = params;
+  const [trueAnswer, setTrueanswer] = useState(0);
+  const [falseAnswer, setFalseAnswer] = useState(0);
+  const [rightAnswers, setRightAnswers] = useState<ICurrentWord[]>([]);
+  const [wrongAnswers, setWrongAnswers] = useState<ICurrentWord[]>([]);
+  const [playWords, setPlayWords] = useState<ICurrentWord[]>([]);
   const isVolume = true;
-  let currentWord: ICurrentWord = {
-    mainWord: "",
-    translateWord: "",
+  const [currentWord, setCurrentWord] = useState<ICurrentWord>({
+    word: "",
+    checkTranslate: "",
+    wordTranslate: "",
     isTrueTranslate: false,
+    id: "",
+    audio: "",
+  });
+
+  const filters = {
+    studying: "{\"$and\":[{\"userWord.optional.studying\":\"true\", \"userWord.optional.deleted\":\"false\"}]}",
+    difficult: "{\"$and\":[{\"userWord.difficulty\":\"true\", \"userWord.optional.deleted\":\"false\"}]}",
+    deleted: "{\"userWord.optional.deleted\":\"true\"}",
+    not_deleted: "{\"userWord.optional.deleted\":\"false\"}",
   };
 
-  const url = `${URL}/words?group=${Number(num) - 1}&page=1`;
+  interface IGetURL {
+    [key: string]: string;
+  }
 
-  useEffect(() => {
-    setIsLoaded(false);
-    fetch(url)
+  function getUrl(numOfPage: number, urlKey: string) {
+    const url: IGetURL = {
+      All: `${API_URL}words?group=${Number(difficulty) - 1}&page=${numOfPage}`,
+      UserAll: `${API_URL}users/${user.id}/aggregatedWords?group=${Number(difficulty) - 1}&page=${numOfPage}&filter=${filters.not_deleted}&wordsPerPage=20`,
+      UserDiff: `${API_URL}users/${user.id}/aggregatedWords?group=${Number(difficulty) - 1}&page=0&filter=${filters.difficult}&wordsPerPage=20`,
+      UserStudying: `${API_URL}users/${user.id}/aggregatedWords?group=${Number(difficulty) - 1}&page=0&filter=${filters.studying}&wordsPerPage=20`,
+    };
+    return url[urlKey];
+  }
+
+  function fetchingData(url: string) {
+    console.log(url);
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
       .then((res) => res.json())
       .then(
         (result) => {
-          setWords(result);
+          if (game.gameFrom === DICTIONARY) {
+            setWords(result[0].paginatedResults);
+          } else {
+            setWords(result);
+          }
           setIsLoaded(true);
         },
         (error) => {
           setIsLoaded(true);
           setError(error);
+          console.log(error);
         },
       );
     return function cleanup() {
       setWords([]);
     };
-  }, [num]);
+  }
 
-  const playGame = useCallback((words: any) => {
-    const wordData = {
-      mainWord: "",
-      translateWord: ERROR_WORD,
+  useEffect(() => {
+    if (game.gameFrom === DICTIONARY) {
+      fetchingData(getUrl(pageCounter, "UserDiff"));
+    } else {
+      fetchingData(getUrl(pageCounter, "All"));
+    }
+    setIsLoaded(false);
+  }, [difficulty]);
+
+  const playGame = useCallback((wordArr: ICurrentWord[]) => {
+    const wordData: IWordData = {
+      word: "",
+      checkTranslate: ERROR_WORD,
+      wordTranslate: "",
+      id: "",
       isTrueTranslate: false,
+      audio: "",
     };
-    const playWords = JSON.parse(JSON.stringify(words));
+
+    if (wordArr.length < 1) {
+      if (game.gameFrom === DICTIONARY) {
+        setFinish(true);
+        return;
+      }
+      pageCounter += 1;
+      if (pageCounter === 31) setFinish(true);
+      fetchingData(getUrl(pageCounter, "All"));
+      setIsLoaded(false);
+      return;
+    }
+
     wordData.isTrueTranslate = Boolean(Math.round(Math.random()));
-    const numOfWord = random(words.length - 1);
-    const numFakeWord = words.length < 19 ? numOfWord + 1 : numOfWord - 1;
-    wordData.mainWord = playWords ? playWords[numOfWord].word : playWords;
+    const numOfWord = random(wordArr.length - 1);
+    const numFakeWord = numOfWord < wordArr.length ? numOfWord - 1 : numOfWord + 1;
+    wordData.word = wordArr ? wordArr[numOfWord].word : wordArr;
+    const idCheck = game.gameFrom === DICTIONARY ? "_id" : "id";
+    wordData.id = wordArr ? wordArr[numOfWord][idCheck] : wordArr;
     try {
-      wordData.translateWord = wordData.isTrueTranslate
-        ? playWords[numOfWord].wordTranslate : playWords[numFakeWord].wordTranslate;
+      wordData.wordTranslate = wordArr[numOfWord].wordTranslate;
+      wordData.audio = wordArr[numOfWord].audio;
+      wordData.checkTranslate = wordData.isTrueTranslate
+        ? wordArr[numOfWord].wordTranslate : wordArr[numFakeWord].wordTranslate;
     } catch (e) {
       console.log(ERROR + e);
     }
-    return wordData;
-  }, [num]);
+    setPlayWords(wordArr.filter((item, index) => numOfWord !== index));
 
-  if (isLoaded && words) {
-    currentWord = playGame(words);
-    console.log(currentWord);
-  }
+    setCurrentWord(wordData);
+    return wordData;
+  }, [difficulty]);
+
+  useEffect(() => {
+    if (isLoaded && words) {
+      playGame(playWords);
+    }
+  }, [checkbox.length]);
+
+  useEffect(() => {
+    if (isLoaded && words) {
+      setPlayWords(JSON.parse(JSON.stringify(words)));
+      playGame(words);
+    }
+  }, [isLoaded]);
 
   useEffect(() => {
     if (checkbox.length === 3) {
       const checked = checkbox.indexOf(false);
       if (checked === -1) {
         setBonus(bonus * 2);
-        console.log(bonus);
       } else {
         setBonus(10);
       }
     }
   }, [checkbox.length]);
 
-  function fullscreen () {
-    const x = sprintEl.current;
+  function fullscreen() {
+    const x: any = sprintEl.current;
     x.webkitRequestFullScreen();
-    if (document.fullscreenEnabled){
-      console.log('full')
+    if (document.fullscreenEnabled) {
       document.webkitCancelFullScreen();
     }
-    // requestFullScreen()
+  }
+
+  function keyboardEventHandler(event) {
+    if (event.key === RIGHT_ARROW || event.key === LEFT_ARROW) handleClick(event);
   }
 
   function handleClick(event: any) {
@@ -123,20 +221,34 @@ export default function Sprint() {
         setCheckbox([state]);
       }
     };
+
+    // const btn = event.target.innerHTML === RIGHT;
     const btn = event.target.innerHTML === RIGHT || event.key === RIGHT_ARROW;
     if (btn === currentWord.isTrueTranslate) {
       setScore(score + bonus);
       playCorrect();
       addCheckbox(true);
-    } else {
+      setRightAnswers([...rightAnswers, currentWord]);
+      setTrueanswer(trueAnswer + 1);
+    } else if (btn !== currentWord.isTrueTranslate) {
       playWrong();
       addCheckbox(false);
+      setWrongAnswers([...wrongAnswers, currentWord]);
+      setFalseAnswer(falseAnswer + 1);
     }
+  }
+
+  function restart() {
+    setScore(0);
+    setCheckbox([]);
+    setBonus(10);
+    setFinish(false);
+    setBegin(true);
   }
 
   if (begin) {
     return (
-      <Begin setBegin={setBegin} />
+      <Begin start={Buttons[lang].start} setBegin={setBegin} />
     );
   }
 
@@ -148,55 +260,51 @@ export default function Sprint() {
     return <div>Загрузка...</div>;
   }
 
-  function beginNow() {
-    setScore(0);
-    setCheckbox([]);
-    setBonus(10);
-    setFinish(false);
-    setBegin(true);
-  }
-
   if (finish) {
     return (
-      <div className="sprint">
-        <h2 className="sprint__header">Результаты</h2>
-        <Button variant="contained" color="secondary" onClick={beginNow} >
-          Играть заново
-        </Button>
-        <div className="sprint__words-container">
-          <div>{score} очков</div>
-          <div>{score / 2} опыта</div>
-        </div>
-        Ваш рекорд {score};
-      </div>
+      <ResetGame
+        maxSerie={trueAnswer}
+        rightAnswers={rightAnswers}
+        wrongAnswers={wrongAnswers}
+        resetgame={restart}
+        gameId={GAME_ID}
+      />
     );
   }
 
   return (
-    <div ref={sprintEl} className="sprint">
+    <div ref={sprintEl} className="sprint" onKeyDown={keyboardEventHandler}>
       <h2 className="sprint__header">sprint</h2>
       <SprintHeader setFinish={setFinish} isVolume={isVolume} score={score} />
       <Points bonus={bonus} checkbox={checkbox} key={Date.now()} />
       <div className="sprint__words-container">
         <h3 className="sprint__words">
-          {currentWord.mainWord}
+          {currentWord.word}
         </h3>
         <h4 className="sprint__translate">
-          {currentWord.translateWord}
+          {currentWord.checkTranslate}
         </h4>
       </div>
       <div className="sprint__button">
+
         <Button variant="contained" color="secondary" onClick={handleClick} >
-          Неверно
+          {Buttons[lang].wrongButton}
         </Button>
-        <Button variant="contained" color="primary" onClick={handleClick} onKeyDown={handleClick}>
-          Верно
+        <Button variant="contained" color="primary" onClick={handleClick} >
+          {Buttons[lang].rightButton}
         </Button>
       </div>
       <Button variant="contained" onClick={fullscreen}>
-        <AspectRatioIcon/>
-        </Button>
+        <AspectRatioIcon />
+      </Button>
     </div>
   );
 }
 
+const mapStateToProps = (state: RootState) => ({
+  game: state.game,
+  user: state.user,
+  lang: state.settingsReducer.lang.lang,
+});
+
+export default connect(mapStateToProps, null)(Sprint);

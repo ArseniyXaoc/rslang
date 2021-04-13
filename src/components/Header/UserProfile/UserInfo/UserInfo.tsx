@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import Link from "@material-ui/core/Link";
 import userInfoStyles from "./UserInfoStyles";
-import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
 
 import userLogo from "../../../../assets/icons/user_default_logo.svg";
 

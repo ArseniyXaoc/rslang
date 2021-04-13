@@ -17,7 +17,7 @@ const FullScreenButton = (props) => {
   }
 
   let fullscreenButtonStyles = {
-    marginTop: "20px"
+    marginTop: "20px",
   }
 
   return (

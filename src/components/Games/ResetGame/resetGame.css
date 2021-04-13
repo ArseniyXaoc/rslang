@@ -1,71 +1,3 @@
-*:fullscreen{
-  background-color: white;
-}
-
-.words-container{
-  display: flex;
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
-}
-
-.words-display{
-  margin: 0 auto;
-  padding-left: 5px;
-  font-family: sans-serif;
-  font-size: 20px;
-  position: relative;
-  min-height: 200px;
-  width: 600px;
-  
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: 50px;
-  margin-top: 50px;
-  border-left: 5px solid #2980b9;
-}
-
-.word-display{
-  height: 20px;
-  cursor: pointer;
-}
-
-.word-absolute{
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-  font-size: 20px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: #fd79a8;
-}
-
-.guess{
-  color: green;
-}
-
-.not-guess{
-  color: red;
-}
-
-.life-container{
-  position: absolute;
-  right: 0;
-}
-
-.life-icon{
-  position: absolute;
-  right: 0;
-}
-
-.life-counter{
-  position: absolute;
-  right: 40px;
-}
-
-
-/* reset game */
-
 .reset-game{
   margin-top: 20px;
 }
@@ -83,7 +15,6 @@
 .false-words{
   display: flex;
   margin-top: 10px;
-  /* align-items: center; */
 }
 
 .play-sound{
@@ -129,13 +60,14 @@
   border-radius: 10px;
   padding: 0 10px 0 10px;
   color: white;
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+  font-family:'Roboto', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .answers{
-  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family:'Roboto', Tahoma, Geneva, Verdana, sans-serif;
   color: silver;
   font-size: 18px;
+  margin-left: 27px;
 }
 
 .right-counter{
