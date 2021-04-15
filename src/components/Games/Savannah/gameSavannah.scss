@@ -155,7 +155,7 @@
 
 .answers{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: silver;
+  color: white;
   font-size: 18px;
 }
 
@@ -181,11 +181,16 @@
   border-radius: 20px;
   width: 15px;
   height: 2px;
-  background-color: silver;
+  background-color: white;
 }
 
 .ru{
   margin-left: 0px;
-  color: silver;
+  color: white;
   font-weight: 500;
+}
+
+.word-link {
+  margin: 0 auto;
+  margin-top: 10px;
 }

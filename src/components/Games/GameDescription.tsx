@@ -12,7 +12,7 @@ interface IGameMenu {
   gameSelected: string,
 }
 
-export default function AudioCallDescription({
+export default function GameDescription({
   gameName, description, game, gameSelected,
 }: IGameMenu) {
   return (

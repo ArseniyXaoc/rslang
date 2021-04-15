@@ -2,6 +2,7 @@ export type UserType = {
   id: string | null,
   name: string | null,
   email: string | null,
+  photoUrl: string | null,
   token: string | null,
   refreshToken: string | null,
 }
@@ -11,6 +12,7 @@ const InitialStateUser: UserType = {
   name: null,
   email: null,
   token: null,
+  photoUrl: null,
   refreshToken: null,
 };
 
@@ -30,6 +32,7 @@ export const userReducer = (state = InitialStateUser, action: any) => {
       document.cookie = `id = ${action.value.id}; `;
       document.cookie = `name = ${action.value.name}; `;
       document.cookie = `email = ${action.value.email}; `;
+      document.cookie = `photoUrl = ${action.value.photoUrl}; `;
       document.cookie = `token = ${action.value.token}; `;
       document.cookie = `refreshToken = ${action.value.refreshToken}; `;
       return { ...InitialStateUser, ...action.value };
@@ -37,6 +40,7 @@ export const userReducer = (state = InitialStateUser, action: any) => {
       document.cookie = `id = ${action.value.id}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
       document.cookie = `name = ${action.value.name}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
       document.cookie = `email = ${action.value.email}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+      document.cookie = `photoUrl = ${action.value.photoUrl}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
       document.cookie = `token = ${action.value.token}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
       document.cookie = `refreshToken = ${action.value.refreshToken}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
       return {
@@ -44,6 +48,7 @@ export const userReducer = (state = InitialStateUser, action: any) => {
         name: null,
         email: null,
         token: null,
+        photoUrl: null,
         refreshToken: null,
       };
     default:

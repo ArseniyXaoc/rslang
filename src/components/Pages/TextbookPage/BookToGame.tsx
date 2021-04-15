@@ -28,6 +28,8 @@ function BookToGame({
       GAME[lang].SPRINT.NAME}</Link>
       <Link className="link-navigation" to={`/games/savannah/level/${difficulty}/${page}`}>{
       GAME[lang].SAVANNA.NAME}</Link>
+      <Link className="link-navigation" to={`/games/hangman/level/${difficulty}/${page}`}>{
+      GAME[lang].HANGMAN.NAME}</Link>
     </div>
   );
 }

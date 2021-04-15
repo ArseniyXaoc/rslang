@@ -50,6 +50,7 @@ function MainPage() {
           <RouterLink className={useStyles.links} to={"/games/audiocall"}>Audiocall</RouterLink>
           <RouterLink className={useStyles.links} to={"/games/sprint"}>Sprint</RouterLink>
           <RouterLink className={useStyles.links} to={"/games/savannah"}>Savannah</RouterLink>
+          <RouterLink className={useStyles.links} to={"/games/hangman"}>Hangman</RouterLink>
         </Paper>
       </div>
     </div >

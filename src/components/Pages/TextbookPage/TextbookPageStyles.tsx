@@ -14,7 +14,7 @@ const textbookStyles = makeStyles({
     padding: "0 15px",
   },
   textbookSectionBlock: {
-    width: "200px",
+    width: "210px",
     display: "flex",
     justifyContent: "flex-end",
   },

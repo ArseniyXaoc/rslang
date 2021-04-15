@@ -60,7 +60,7 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
   const [begin, setBegin] = useState(true);
   const [playCorrect] = useSound(correct);
   const [playWrong] = useSound(wrong);
-  const [trueAnswer, setTrueanswer] = useState(0);
+  const [trueAnswer, setTrueAnswer] = useState(0);
   const [falseAnswer, setFalseAnswer] = useState(0);
   const [rightAnswers, setRightAnswers] = useState<ICurrentWord[]>([]);
   const [wrongAnswers, setWrongAnswers] = useState<ICurrentWord[]>([]);
@@ -235,7 +235,9 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
       if (isVolume) playCorrect();
       addCheckbox(true);
       setRightAnswers([...rightAnswers, currentWord]);
-      setTrueanswer(trueAnswer + 1);
+      setTrueAnswer(trueAnswer + 1);
+    } else {
+      setTrueAnswer(trueAnswer + 1);
     } else if (btn !== currentWord.isTrueTranslate) {
       if (isVolume) playWrong();
       addCheckbox(false);
@@ -258,6 +260,12 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
     setRightAnswers([]);
     setWrongAnswers([]);
     setNoWords(false);
+    if (game.gameFrom === DICTIONARY) {
+      fetchingData(getUrl(pageCounter, "UserDiff"));
+    } else {
+      fetchingData(getUrl(pageCounter, "All"));
+    }
+    setIsLoaded(false);
   }
 
   if (noWords) {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import EmojiEmotionsTwoToneIcon from "@material-ui/icons/EmojiEmotionsTwoTone";
@@ -7,9 +6,9 @@ import "./resetGame.css";
 import { connect } from "react-redux";
 import WordUpdate from "../WordUpdate/WordUpdate";
 
-import { signOut } from "../../../redux/user_reducer";
 import { RootState } from "../../../redux/reducer";
 import API_URL from "../../Constants/constants";
+import { Link, NavLink } from "react-router-dom";
 
 function ResetGame({
   user, game, maxSerie, rightAnswers, wrongAnswers, resetgame, gameId, lang
@@ -59,7 +58,7 @@ function ResetGame({
           </div>
 
           <div className="word-answer en">{elem.word}</div>
-          <span className="separator"></span>
+          <span className="separator"/>
           <div className="word-answer ru">{elem.wordTranslate}</div>
         </div>
     ));
@@ -75,7 +74,7 @@ function ResetGame({
           </div>
 
           <div className="word-answer en">{elem.word}</div>
-          <span className="separator"></span>
+          <span className="separator"/>
           <div className="word-answer ru">{elem.wordTranslate}</div>
         </div>
     ));
@@ -130,16 +129,31 @@ function ResetGame({
       });
   }, [gameStatistics]);
 
-  useEffect(() => {
+  function endGame() {
     if (game && user.id) {
       rightAnswers.forEach((element: any) => {
+        element.id = element.id ? element.id : element._id;
         WordUpdate(user, element.id, true, game);
       });
       wrongAnswers.forEach((element: any) => {
+        element.id = element.id ? element.id : element._id;
         WordUpdate(user, element.id, false, game);
       });
     }
-  }, []);
+  }
+
+  // useEffect(() => {
+  //   if (game && user.id) {
+  //     rightAnswers.forEach((element: any) => {
+  //       element.id = element.id ? element.id : element._id;
+  //       WordUpdate(user, element.id, true, game);
+  //     });
+  //     wrongAnswers.forEach((element: any) => {
+  //       element.id = element.id ? element.id : element._id;
+  //       WordUpdate(user, element.id, false, game);
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div className="reset-game">
@@ -151,7 +165,7 @@ function ResetGame({
       <div className="right-answers">
         {trueWords}
       </div>
-      <div className="answers-separator"></div>
+      <div className="answers-separator"/>
       <div className="wrong-answers-counter">
         <div className="answers">{lang === "ru" ? "Ошибок:" : "Mistakes:"} </div>
         <div className="wrong-counter">{wrongAnswers.length}</div>
@@ -162,6 +176,9 @@ function ResetGame({
       <Button style={{ ...buttonStyles }} variant="contained" onClick={resetgame}>
       {lang === "ru" ? "Попробовать ещё раз" : "Try Again"}
       </Button>
+      <NavLink activeClassName="word-link" to="/"><Button style={{ ...buttonStyles }} variant="contained" onClick={endGame}>
+      {lang === "ru" ? "Завершить" : "End Game"}
+      </Button></NavLink>
     </div>
   );
 }

@@ -7,20 +7,22 @@ import { connect } from "react-redux";
 import Sprint from "./Sprint/Sprint";
 import GameAudioCall from "./AudioCall/GameAudioCall";
 import GameSavannah from "./Savannah/GameSavannah";
+import GameHangman from "./Hangman/GameHangman";
 import "./games.scss";
 
 import GameDescription from "./GameDescription";
 import {
-  GAME, SELECT_AUDIOCALL, SELECT_SPRINT, SELECT_SAVANNAH,
+  GAME, SELECT_AUDIOCALL, SELECT_SPRINT, SELECT_SAVANNAH, SELECT_HANGMAN,
 } from "./gameSettings";
 
 import { RootState } from "../../redux/reducer";
 
 function Games({ lang }: {lang:string}) {
-  console.log(lang);
+  console.log('--- games', lang);
   const audioCall = () => (<GameAudioCall />);
   const sprint = () => (<Sprint />);
   const savannah = () => (<GameSavannah />);
+  const hangman = () => (<GameHangman />);
 
   const [hideMenu, setHideMenu] = useState(false);
   const location = useLocation();
@@ -45,6 +47,7 @@ function Games({ lang }: {lang:string}) {
         <Link className="links" to="/games/audiocall">{GAME[lang].AUDIOCALL.NAME}</Link>
         <Link className="links" to="/games/sprint">{GAME[lang].SPRINT.NAME}</Link>
         <Link className="links" to="/games/savannah">{GAME[lang].SAVANNA.NAME}</Link>
+        <Link className="links" to="/games/hangman">{GAME[lang].HANGMAN.NAME}</Link>
         </div>
       </div>
 
@@ -60,6 +63,11 @@ function Games({ lang }: {lang:string}) {
         <GameDescription gameName={GAME[lang].SAVANNA.NAME} description={GAME[lang].SAVANNA.DESCRIPTION()}
         game={savannah} gameSelected ={SELECT_SAVANNAH} />
       </Route>
+      <Route path="/games/hangman">
+        <GameDescription gameName={GAME[lang].HANGMAN.NAME} description={GAME[lang].HANGMAN.DESCRIPTION()}
+        game={hangman} gameSelected ={SELECT_HANGMAN} />
+      </Route>
+
     </div>
   );
 }

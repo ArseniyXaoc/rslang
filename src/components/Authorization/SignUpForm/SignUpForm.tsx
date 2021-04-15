@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Avatar from "@material-ui/core/Avatar";
@@ -43,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUpForm() {
+  const ava = useRef(null);
+  const [fileName, setFileName] = useState(null);
   const classes = useStyles();
   const history = useHistory();
   const [loading, setLoading] = useState(false);
@@ -70,9 +72,25 @@ export default function SignUpForm() {
     },
   };
 
+  const sendFile = async () => {
+    const file = ava.current.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("avatar", file);
+      const rawRes = await fetch(`${API_URL}photo/upload`, {
+        method: "POST",
+        body: formData,
+      });
+      const res = await rawRes.json();
+      return res.url;
+    }
+    return null;
+  };
+
   const onSubmit = async (data, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    data.photoUrl = await sendFile();
     const rawResponse = await fetch(`${API_URL}users`, {
       method: "POST",
       headers: {
@@ -82,16 +100,13 @@ export default function SignUpForm() {
       body: JSON.stringify(data),
     });
     if (rawResponse.ok) {
-      history.push("/");
+      history.push("/signin");
     } else {
       setSignUpResult({
         error: "This email is already registered",
       });
       setLoading(false);
     }
-    // setLoading(false);
-    // const content = await rawResponse.json();
-    // console.log(content);
   };
 
   return (
@@ -170,7 +185,27 @@ export default function SignUpForm() {
                 })}
               />
             </Grid>
-
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                component="label"
+              >
+                Your photo
+                <input
+                  type="file"
+                  ref={ava}
+                  hidden
+                  onChange={(e) => {
+                    if (e.target.files.length > 0) {
+                      setFileName(e.target.files[0].name);
+                    } else {
+                      setFileName(null);
+                    }
+                  }}
+                />
+              </Button>
+              {fileName}
+            </Grid>
           </Grid>
           {signUpResult?.error && < Alert severity="error">{signUpResult.error}</Alert>}
           <Button

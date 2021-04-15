@@ -20,8 +20,8 @@ function GameMenu(props: any) {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    const currentLocatin = location.pathname;
-    const chunckL = currentLocatin.split("/").pop();
+    const currentLocation = location.pathname;
+    const chunckL = currentLocation.split("/").pop();
     const num = Number(chunckL);
 
     if (typeof num === "number" && !isNaN(num)) {
@@ -31,9 +31,11 @@ function GameMenu(props: any) {
     }
   }, [location]);
 
+  console.log('!!! gamemenu');
+
   return (
     <div className="game-container">
-
+      <h6 className={hide ? "game-name" : "game-name hide"}>{props.gameName}</h6>
       <div className={hide ? "game-menu hide" : "game-menu"}>
         <div className="game-name">{props.gameName}</div>
         <div className="game-description">{props.description}</div>

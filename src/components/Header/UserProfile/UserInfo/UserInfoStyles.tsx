@@ -13,7 +13,7 @@ const userInfoStyles = makeStyles(
       },
 
       "& > img": {
-        width: "24px",
+        width: "32px",
       },
 
       "& > a": {

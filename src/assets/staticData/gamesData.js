@@ -1,6 +1,7 @@
 import SavannahImg from "../images/games/Savannah/cardImage.jpg";
 import AudiocallImg from "../images/games/Audiocall/cardImage.jpg";
 import SprintImg from "../images/games/Sprint/cardImage.jpg";
+import HangmanImg from "../images/games/Sprint/cardImage.jpg";
 
 const games = [
   {
@@ -18,6 +19,11 @@ const games = [
     name: "Sprint",
     image: SprintImg,
   },
+  {
+    id: "4",
+    name: "Hangman",
+    image: HangmanImg,
+  }
 ];
 
 export default games;

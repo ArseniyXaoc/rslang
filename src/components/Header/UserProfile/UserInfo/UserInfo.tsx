@@ -11,7 +11,7 @@ function UserInfo({ user }) {
   return (
     <div className={userInfo}>
       <Link component={RouterLink} to="/profile">{user.name}</Link>
-      <img src={userLogo} alt="" />
+      <img src={user.photoUrl ? user.photoUrl : userLogo} alt="" />
     </div>
   );
 }

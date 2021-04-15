@@ -21,6 +21,12 @@ export const GAME : any = {
         return DESCRIPTION_RU(this.NAME);
       },
     },
+    HANGMAN: {
+      NAME: "Виселица",
+      DESCRIPTION() {
+        return DESCRIPTION_RU(this.NAME);
+      },
+    },
   },
   en: {
     AUDIOCALL: {
@@ -41,9 +47,16 @@ export const GAME : any = {
         return DESCRIPTION_ENG(this.NAME);
       },
     },
+    HANGMAN: {
+      NAME: "Hangman",
+      DESCRIPTION() {
+        return DESCRIPTION_ENG(this.NAME);
+      },
+    },
   },
 };
 
 export const SELECT_SAVANNAH = "Savannah";
 export const SELECT_AUDIOCALL = "Audiocall";
 export const SELECT_SPRINT = "Sprint";
+export const SELECT_HANGMAN = "Hangman";

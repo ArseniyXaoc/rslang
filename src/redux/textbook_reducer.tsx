@@ -4,8 +4,8 @@ export type bookPaginationType = {
 };
 
 const initialStateBook: bookPaginationType = {
-  group: number,
-  page: number,
+  group: 0,
+  page: 0,
 };
 
 const SET_GROUP = "SET_GROUP";

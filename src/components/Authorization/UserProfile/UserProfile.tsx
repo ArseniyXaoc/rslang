@@ -20,6 +20,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    width: "150px",
+    height: "150px",
+    fontSize: "50px",
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -32,9 +35,12 @@ const UserProfile = ({ user, signOut }) => {
   return user.email ? <Container component="main" maxWidth="xs">
     <CssBaseline />
     <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        {user.email[0].toUpperCase()}
-      </Avatar>
+      {user.photoUrl
+        ? <Avatar className={classes.avatar} src={user.photoUrl}>
+        </Avatar>
+        : <Avatar className={classes.avatar}>
+          {user.name[0].toUpperCase()}
+        </Avatar>}
       <Typography component="h1" variant="h5">
         {user.name}
       </Typography>

@@ -33,7 +33,7 @@ const DailyStat = ({ user, stat }) => {
   }
   return <div>
     <h1>{"Today"}</h1>
-    <div>{"You didn't any activity today"}</div>
+    <div>{"You didn't have any activity today"}</div>
     <div>{"Play"} <Link component={RouterLink} to={"/games"}>games</Link> to earn score</div>
   </div>;
 };
