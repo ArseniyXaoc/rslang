@@ -23,6 +23,7 @@ import homeIcon from "../../assets/icons/main.svg";
 import bookIcon from "../../assets/icons/textbook.svg";
 import dictionaryIcon from "../../assets/icons/language.svg";
 import gamesIcon from "../../assets/icons/games.svg";
+import searchIcon from "../../assets/icons/search-white.svg";
 import settingIcon from "../../assets/icons/settings.svg";
 import statIcon from "../../assets/icons/trend.svg";
 import teamIcon from "../../assets/icons/group.svg";
@@ -47,6 +48,12 @@ const buttonsData = [
     label: "Мини-игры",
     href: "/games",
     icon: gamesIcon,
+
+  },
+  {
+    label: "Поиск слов",
+    href: "/search",
+    icon: searchIcon,
 
   },
   {

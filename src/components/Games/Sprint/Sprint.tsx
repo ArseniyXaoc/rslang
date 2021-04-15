@@ -10,14 +10,14 @@ import { Key } from "readline";
 import ResetGame from "../ResetGame/ResetGame";
 import "./sprint.scss";
 import Points from "./Points";
-import SprintHeader from "./SprinInterface";
+import SprintHeader from "./SprintHeader";
 import Begin from "./Begin";
 import correct from "../../../assets/sound/correct-choice.wav";
 import wrong from "../../../assets/sound/error.wav";
 import {
   ERROR, ERROR_WORD, RIGHT_ARROW, RIGHT, DICTIONARY, Buttons,
   IButtons, GAME_ID, LEFT_ARROW,
-} from "./sprintconstants";
+} from "./CONSTANTS";
 import { RootState } from "../../../redux/reducer";
 import API_URL from "../../Constants/constants";
 
@@ -65,7 +65,9 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
   const [rightAnswers, setRightAnswers] = useState<ICurrentWord[]>([]);
   const [wrongAnswers, setWrongAnswers] = useState<ICurrentWord[]>([]);
   const [playWords, setPlayWords] = useState<ICurrentWord[]>([]);
-  const isVolume = true;
+  const [isVolume, setIsVolume] = useState(true);
+  const [time, setTime] = useState(40);
+  const [noWords, setNoWords] = useState(false);
   const [currentWord, setCurrentWord] = useState<ICurrentWord>({
     word: "",
     checkTranslate: "",
@@ -109,8 +111,16 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
       .then(
         (result) => {
           if (game.gameFrom === DICTIONARY) {
+            if (result[0].paginatedResults.length === 0) {
+              setNoWords(true);
+              setFinish(false);
+            }
             setWords(result[0].paginatedResults);
           } else {
+            if (result.length === 0) {
+              setNoWords(true);
+              setFinish(false);
+            }
             setWords(result);
           }
           setIsLoaded(true);
@@ -209,10 +219,6 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
     }
   }
 
-  function keyboardEventHandler(event) {
-    if (event.key === RIGHT_ARROW || event.key === LEFT_ARROW) handleClick(event);
-  }
-
   function handleClick(event: any) {
     const addCheckbox = (state: boolean) => {
       if (checkbox.length < 3) {
@@ -226,16 +232,20 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
     const btn = event.target.innerHTML === RIGHT || event.key === RIGHT_ARROW;
     if (btn === currentWord.isTrueTranslate) {
       setScore(score + bonus);
-      playCorrect();
+      if (isVolume) playCorrect();
       addCheckbox(true);
       setRightAnswers([...rightAnswers, currentWord]);
       setTrueanswer(trueAnswer + 1);
     } else if (btn !== currentWord.isTrueTranslate) {
-      playWrong();
+      if (isVolume) playWrong();
       addCheckbox(false);
       setWrongAnswers([...wrongAnswers, currentWord]);
       setFalseAnswer(falseAnswer + 1);
     }
+  }
+
+  function keyboardEventHandler(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === RIGHT_ARROW || event.key === LEFT_ARROW) handleClick(event);
   }
 
   function restart() {
@@ -244,11 +254,21 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
     setBonus(10);
     setFinish(false);
     setBegin(true);
+    setTime(40);
+    setRightAnswers([]);
+    setWrongAnswers([]);
+    setNoWords(false);
+  }
+
+  if (noWords) {
+    return (
+      <div>Слов больше нет, добавьте новые!</div>
+    );
   }
 
   if (begin) {
     return (
-      <Begin start={Buttons[lang].start} setBegin={setBegin} />
+      <Begin start={Buttons[lang].start} setBegin={setBegin} isVolume={isVolume} />
     );
   }
 
@@ -275,7 +295,12 @@ function Sprint({ game, user, lang }: { game: { gameFrom: string }, user: { id: 
   return (
     <div ref={sprintEl} className="sprint" onKeyDown={keyboardEventHandler}>
       <h2 className="sprint__header">sprint</h2>
-      <SprintHeader setFinish={setFinish} isVolume={isVolume} score={score} />
+      <SprintHeader setFinish={setFinish}
+      isVolume={isVolume}
+      score={score}
+      setIsVolume={setIsVolume}
+      time={time}
+      setTime={setTime} />
       <Points bonus={bonus} checkbox={checkbox} key={Date.now()} />
       <div className="sprint__words-container">
         <h3 className="sprint__words">

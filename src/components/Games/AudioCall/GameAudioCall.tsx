@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import VolumeUpIcon from "@material-ui/icons/VolumeUp";
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import Button from '@material-ui/core/Button';
+import AudioVisualize from "./AudioVisualize";
+
+import {LinearProgressStyles, SpeakerIconStyles, StartGameButtonStyle} from './stylesUI';
+
 import { connect } from "react-redux";
 import {
   useParams,
@@ -24,6 +29,8 @@ function GameAudioCall({ game, user, lang }) {
   const { difficulty, page }: { difficulty: string, page: string } = useParams();
   const pageCounter: number = Number(page);
 
+  let [startGame, setStartGame] = useState(false);
+
   const [counter, setCounter] = useState(0);
   const [data, setData] = useState([]);
   const [word, setWord] = useState({});
@@ -35,6 +42,7 @@ function GameAudioCall({ game, user, lang }) {
   const [wrongAnswers, setWrongAnswers] = useState([]);
 
   const [maxSerie, setMaxSerie] = useState(0);
+  const canvasElem = useRef(null);
 
   const filters = {
     studying: "{\"$and\":[{\"userWord.optional.studying\":\"true\", \"userWord.optional.deleted\":\"false\"}]}",
@@ -70,10 +78,8 @@ function GameAudioCall({ game, user, lang }) {
       .then(
         (result) => {
           if (game.gameFrom === "DICTIONARY") {
-            console.log("gameFrom = DICTIONARY");
             initGame(result[0].paginatedResults);
           } else {
-            console.log("gameFrom != DICTIONARY");
             initGame(result);
           }
         },
@@ -83,9 +89,6 @@ function GameAudioCall({ game, user, lang }) {
       );
   }
 
-  useEffect(() => {
-    getData();
-  }, [difficulty]);
 
   function getData() {
     if (game.gameFrom === "DICTIONARY") {
@@ -107,9 +110,9 @@ function GameAudioCall({ game, user, lang }) {
   }
 
   function addData(data: any) {
+
     let data3;
-    const currentDifficulty = data[0].group;
-    fetch(`${API_URL}words?group=${Number(currentDifficulty)}&page=${Number(page)}`, {
+    fetch(`${API_URL}words?group=${Number(difficulty - 1)}&page=${Number(page - 1)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -143,7 +146,6 @@ function GameAudioCall({ game, user, lang }) {
   }, [counter]);
 
   useEffect(() => {
-    if (counter === 0) return;
     if (counter >= 10) return;
 
     const timeoutId = setTimeout(() => {
@@ -155,11 +157,15 @@ function GameAudioCall({ game, user, lang }) {
 
   useEffect(() => {
     let res = data.filter((elem, index) => {
+      if(word === undefined) return;
+
       if (elem.word === word.word) return;
-      if (index > 3) return;
+      if (index >= 3) return;
 
       return elem.word;
     });
+
+    
 
     res.push(word);
     res = shuffle(res);
@@ -167,13 +173,18 @@ function GameAudioCall({ game, user, lang }) {
     setDisplayWords(res);
   }, [data, word]);
 
-  const canvas = document.querySelector(".canvas1");
-  const audio = new Audio();
 
+  let ctx: any;
+  let canvas: any;
+  
   function playWord() {
-    const audioSrc = URL + word.audio;
+    if(startGame === false) return;
 
-    AudioVisualize(canvas, audioSrc);
+    let audioSrc = URL + word.audio;
+    ctx = ctx || canvasElem.current.getContext('2d');
+    canvas = canvas || canvasElem.current;
+
+    AudioVisualize(canvas, audioSrc, ctx);
   }
 
   function addAnswers(word: any, state: any, elems: []) {
@@ -228,10 +239,26 @@ function GameAudioCall({ game, user, lang }) {
     setDisplayWords([]);
     setRightAnswers([]);
     setWrongAnswers([]);
+    setStartGame(false);
+  }
+
+  function startGameF() {
+    setStartGame(true);
     getData();
   }
 
-  if (counter === 10) {
+  if(startGame === false) {
+    return (
+      <div className="audiocall-start-game-button">
+        <Button variant="contained" style={{...StartGameButtonStyle}} onClick={startGameF}>
+          start game
+        </Button>
+      </div>
+    )
+  }
+
+
+  if(counter === 10) {
     return (
       <ResetGame
         rightAnswers={rightAnswers}
@@ -249,10 +276,10 @@ function GameAudioCall({ game, user, lang }) {
 
       <div className="media-content">
         <VolumeUpIcon style={{ ...SpeakerIconStyles }} onClick={() => playWord()}/>
-        <canvas width="300" height="300" className="canvas1"></canvas>
+        <canvas ref={canvasElem} width="300" height="300" className="canvas1"></canvas>
       </div>
-
-      <LinearProgress style={{ ...LinearProgressStyles }} variant="determinate" value={counter * 10} />
+      
+      <LinearProgress className="line-progress" style={{ ...LinearProgressStyles }} variant="determinate" value={counter * 10} />
 
       <DisplayWordsComponent displayWords={displayWords} checkWord={checkWord} counter={counter} />
 

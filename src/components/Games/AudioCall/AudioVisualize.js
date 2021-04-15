@@ -4,10 +4,13 @@ let audioSource;
 let analyser;
 let audioCtx;
 
-function AudioVisualize(canvas, audioSrc) {
-  try {
-    const ctx = canvas.getContext("2d");
 
+function AudioVisualize(canvas, audioSrc, ctx) {
+
+  try {
+  
+    // const ctx = canvas.getContext('2d');
+    
     audio1.src = audioSrc;
     audio1.crossOrigin = "anonymous";
 
@@ -32,6 +35,7 @@ function AudioVisualize(canvas, audioSrc) {
     const barWidth = 5;
     let barHeight;
     let x;
+    let requestId;
 
     function animate() {
       x = 0;
@@ -39,7 +43,7 @@ function AudioVisualize(canvas, audioSrc) {
       analyser.getByteFrequencyData(dataArray);
 
       drawVisualizer(bufferLength, x, barWidth, barHeight, dataArray);
-      requestAnimationFrame(animate);
+      requestId = requestAnimationFrame(animate);
     }
     animate();
 
@@ -59,7 +63,12 @@ function AudioVisualize(canvas, audioSrc) {
         ctx.restore();
       }
     }
-  } catch (error) {
+
+    audio1.addEventListener('ended', () => {
+      setTimeout(() => cancelAnimationFrame(requestId), 500);
+    });
+
+  } catch(error) {
     throw error;
   }
 }

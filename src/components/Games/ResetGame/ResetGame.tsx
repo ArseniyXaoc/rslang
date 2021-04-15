@@ -12,9 +12,17 @@ import { RootState } from "../../../redux/reducer";
 import API_URL from "../../Constants/constants";
 
 function ResetGame({
-  user, game, maxSerie, rightAnswers, wrongAnswers, resetgame, gameId,
+  user, game, maxSerie, rightAnswers, wrongAnswers, resetgame, gameId, lang
 }) {
-  // console.log(rightAnswers, wrongAnswers);
+
+  let emojiStyles = {
+    cursor: "pointer",
+    color: "red"
+  };
+
+  let [emojiEmotionsTwoToneIconStyles, setEmojiEmotionsTwoToneIconStyles] = useState(emojiStyles);
+  
+  let arrStylesEmotion = ["red", "blue", "green", "silver", "orange", "black", "white", "gray", "pink", "mint"];
 
   const buttonStyles = {
     backgroundColor: "#3498db",
@@ -22,6 +30,19 @@ function ResetGame({
     cursor: "pointer",
     margin: "0 auto",
   };
+
+  
+
+  function func() {
+    setEmojiEmotionsTwoToneIconStyles(
+      prev => {
+        return {
+          ...prev,
+          color: arrStylesEmotion[Math.trunc(Math.random() * 10)]
+        }
+      }
+    )
+  }
 
   const herokuUrl = API_URL;
 
@@ -122,9 +143,9 @@ function ResetGame({
 
   return (
     <div className="reset-game">
-      <div className="end-game-emotion">это конец <EmojiEmotionsTwoToneIcon color="primary"/></div>
+      <div className="end-game-emotion">это конец <EmojiEmotionsTwoToneIcon style={{...emojiEmotionsTwoToneIconStyles}} onClick={func}/></div>
       <div className="right-answers-counter">
-        <div className="answers">Знаю: </div>
+        <div className="answers">{lang === "ru" ? "Знаю:" : "Know:"} </div>
         <div className="right-counter">{rightAnswers.length}</div>
       </div>
       <div className="right-answers">
@@ -132,14 +153,14 @@ function ResetGame({
       </div>
       <div className="answers-separator"></div>
       <div className="wrong-answers-counter">
-        <div className="answers">Ошибок: </div>
+        <div className="answers">{lang === "ru" ? "Ошибок:" : "Mistakes:"} </div>
         <div className="wrong-counter">{wrongAnswers.length}</div>
       </div>
       <div className="wrong-answers">
         {falseWords}
       </div>
       <Button style={{ ...buttonStyles }} variant="contained" onClick={resetgame}>
-        попробовать ещё раз
+      {lang === "ru" ? "Попробовать ещё раз" : "Try Again"}
       </Button>
     </div>
   );
@@ -148,6 +169,7 @@ function ResetGame({
 const mapStateToProps = (state: RootState) => ({
   user: state.user,
   game: state.game.gameFrom,
+  lang: state.settingsReducer.lang.lang,
 });
 
 export default connect(mapStateToProps)(ResetGame);

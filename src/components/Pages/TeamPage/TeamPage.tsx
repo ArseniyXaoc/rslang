@@ -2,40 +2,41 @@ import React from "react";
 import TeamCard from "./components/TeamCard";
 import TeamStyles from "./TeamCardStyles";
 import teamDescription from "../../../assets/staticData/teamDescription.json";
+import { connect } from "react-redux";
+import { RootState } from "../../../redux/reducer";
+import juliaImg from "../../../assets/images/team/julia.jpg";
+import ilyaImg from "../../../assets/images/team/ilya.jpg";
+import kateImg from "../../../assets/images/team/kate.jpg";
+import arseniyImg from "../../../assets/images/team/arseniy.jpg";
+import maksimImg from "../../../assets/images/team/maksim.jpg";
 
-// function getUserData(url:string) {
-//     return fetch(url)
-//     .then((response) => {
-//       if (response.ok) {
-//         return response.json();
-//       }
-//       return Promise.reject(response.json);
-//     })
-//     .catch((error) => alert(`Something went wrong! Error: ${error.statusText}`))
-// }
+type Props = {
+  lang: string
+}
 
-const TeamPage: React.FC = () => {
+const TeamPage: React.FC<Props> = ({lang}) => {
   const useStyles = TeamStyles();
-  // const [usersData, setUserData ] = useState([]);
-  // const url = "../../../assets/staticData/teamDescription.json";
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const userData = getUserData(url);
-  //     userData.then((data) => {
-  //       setUserData(data.team);
-  //     })
-  //   }
-  //    fetchData();
-  // }, [])
+  const teamImg = {
+    ilya: ilyaImg,
+    julia: juliaImg,
+    kate: kateImg,
+    arseniy: arseniyImg,
+    maksim: maksimImg
+  }
 
   return (
-    <div className={useStyles.teamCardsContainer}>
-        {
-            teamDescription.team.map((user) => <TeamCard key={user.id} userInfo={user} />)
-        }
+    <div className={useStyles.teamPageContainer}>
+      <div className={useStyles.teamCardsContainer}>
+          {
+              teamDescription.team[lang].map((user) => <TeamCard key={user.id} userInfo={user} teamImg={teamImg} />)
+          }
+      </div>
     </div>
   );
 };
 
-export default TeamPage;
+const mapStateToProps = (state:RootState) => ({
+  lang: state.settingsReducer.lang.lang
+});
+
+export default connect(mapStateToProps)(TeamPage);

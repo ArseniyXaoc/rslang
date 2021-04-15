@@ -2,16 +2,18 @@ import React from "react";
 import TeamStyles from "../TeamCardStyles";
 import github from "../../../../assets/icons/github.svg";
 
+
 interface UserInfo {
-    userInfo: any
+    userInfo: any,
+    teamImg: any
 }
 
-const TeamCard = ({ userInfo }:UserInfo) => {
+const TeamCard = ({ userInfo, teamImg }:UserInfo) => {
   const useStyles = TeamStyles();
 
   return (
     <div className={useStyles.userCardContainer}>
-        <img className={useStyles.userImg} src={userInfo.userImg} alt={userInfo.userName} />
+        <img className={useStyles.userImg} src={teamImg[userInfo.userImg]} alt={userInfo.userName} />
         <div className={useStyles.userDetails} >
             <h2 className={useStyles.userName}>{userInfo.userName}</h2>
             <p className={useStyles.userDescription}>{userInfo.userDescription}</p>

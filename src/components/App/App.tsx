@@ -9,6 +9,7 @@ import SignIn from "../Authorization/SignIn";
 import SignUp from "../Authorization/SignUp";
 import UserProfile from "../Authorization/UserProfile";
 import Stat from "../Statistics";
+import Search from "../Search";
 
 import AudioCall from "../Games/AudioCall/AudioCallDescription";
 import Games from "../Games/Games";
@@ -71,7 +72,7 @@ const App = () => {
               <Header />
               <main className={useStyles.mainContent}>
                 <Switch>
-                <Route path="/main">
+                  <Route path="/main">
                     <MainPage />
                   </Route>
                   <Route path="/games">
@@ -97,6 +98,9 @@ const App = () => {
                   </Route>
                   <Route path="/statistics">
                     <Stat />
+                  </Route>
+                  <Route path="/search">
+                    <Search />
                   </Route>
                 </Switch>
               </main>

@@ -109,24 +109,23 @@ function GameSavannah({ game, user }: { game: { gameFrom: string }, user: {id: a
 
   function addData(data: any) {
     let data3;
-    const currentDifficulty = data[0].group;
-    fetch(`${API_URL}words?group=${Number(currentDifficulty)}&page=${Number(page)}`, {
+    fetch(`${API_URL}words?group=${Number(difficulty - 1)}&page=${Number(page - 1)}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
-      .then((resData) => {
-        data3 = [...data, ...resData];
-        data3 = data3.splice(0, 20);
-        data3 = shuffle(data3);
+    .then(res => res.json())
+    .then(resData => {
+      data3 = [...data, ...resData];
+      data3 = data3.splice(0, 20);
+      data3 = shuffle(data3);
 
-        setWord(data3.pop());
-        setData(data3);
-      }).catch((error) => {
-        console.log(error);
-      });
+      setWord(data3.pop());
+      setData(data3);
+    }).catch(error => {
+      console.log(error)
+    })
   }
 
   useEffect(() => {
@@ -223,7 +222,10 @@ function GameSavannah({ game, user }: { game: { gameFrom: string }, user: {id: a
       gravityCounter++;
       setGravityCounter(gravityCounter);
 
-      elem.style.top = `${gravityCounter}px`;
+      if(elem) {
+        elem.style.top = `${gravityCounter}px`;
+      }
+      
     }, 50);
 
     return () => clearInterval(intervalId);
@@ -241,16 +243,20 @@ function GameSavannah({ game, user }: { game: { gameFrom: string }, user: {id: a
   }, [lifeCounter, counter]);
 
   useEffect(() => {
-    const res = displayWords.map((elem: any, index: number) => (
-      <div
-        data-value={elem.word}
-        className="word-display"
-        key={index}
-        onClick={(e) => checkWord(e)}
-      >
-        {elem.wordTranslate}
-      </div>
-    ));
+  
+    const res = displayWords.map((elem: any, index: number) => {
+      if(elem === undefined) return;
+      return (
+          <div
+          data-value={elem.word}
+          className="word-display"
+          key={index}
+          onClick={(e) => checkWord(e)}
+        >
+          {elem.wordTranslate}
+        </div>
+      )
+    })
 
     setWordsDisplayedOnTheScreen(res);
   }, [displayWords]);
@@ -279,12 +285,12 @@ function GameSavannah({ game, user }: { game: { gameFrom: string }, user: {id: a
 
   return (
     <div className="words-container">
-      {/* <img className="image-background" src={bacground} alt="саванна"/>  */}
       <div className="savannah-background-gradient"></div>
       <div className="words-display">
         <LifeCounterGame lifeCounter={lifeCounter} />
 
-        <div className="word-absolute">{word.word}</div>
+        {word ? <div className="word-absolute">{word.word}</div> : ""}
+        
         {wordsDisplayedOnTheScreen}
       </div>
 

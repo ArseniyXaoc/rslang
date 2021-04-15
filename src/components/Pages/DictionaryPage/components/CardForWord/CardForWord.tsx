@@ -25,7 +25,8 @@ type Props = {
     buttonsSettings: any,
     cardSettings: any,
     user: any,
-    isMain: boolean
+    isMain: boolean,
+    isLearnCategory: boolean
 }
 
 function updateListOfUserWords(data:any, metod:string, url:string, authorizationToken:string,  setCheckedWord, setIsDeleted, setIsDifficult, setIsStudied):void {
@@ -77,7 +78,7 @@ function checkWords(url:string, authorizationToken:string, setCheckedWord, setIs
       .catch((error)=> {console.log(error)});
 }
 
-const CardForWords: React.FC<Props> = ({cardInfo, lang, buttonsSettings, cardSettings, user, isMain}) => {
+const CardForWords: React.FC<Props> = ({cardInfo, lang, buttonsSettings, cardSettings, user, isMain, isLearnCategory}) => {
     const authorizationToken = user.token;
     const userId = user.id;
     const url = API_URL;
@@ -154,7 +155,7 @@ const CardForWords: React.FC<Props> = ({cardInfo, lang, buttonsSettings, cardSet
            updateListOfUserWords(data, "POST", urlRequest, authorizationToken, setCheckedWord, setIsDeleted, setIsDifficult, setIsStudied);
         }
     }
-    
+
     if (isMain && isDeleted === "false" || !isMain && isDeleted === "true" || !isMain && isDifficult === "true" || !isMain && isStudied === "true") {
         return (
             <div className={useStyles.cardContainer}>
@@ -209,7 +210,7 @@ const CardForWords: React.FC<Props> = ({cardInfo, lang, buttonsSettings, cardSet
                         </div> : null
                     }
                     {
-                        !isMain && isStudied === "true" ? 
+                        !isMain && isStudied === "true" && isLearnCategory ? 
                         <div className={useStyles.cardScore}>
                             <div>{lang === "en" ? "Study result : " : "Результат изучения: "}</div>
                             <div className={useStyles.rightAnswers}>{checkedWord.optional.rightAnswers ? checkedWord.optional.rightAnswers : 0}</div>

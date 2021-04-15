@@ -1,11 +1,17 @@
 .game-container {
   margin: 0 auto;
-  /*margin-top: 50px;*/
-  width: 600px;
+  width: 800px;
   margin-bottom: 23px;
   /*height: 72vh;*/
   /* width: 50vw; */
 }
+
+@media (max-width: 810px){
+  .game-container {
+    width: 600px;
+  }
+}
+
 
 .game-name{
   text-align: center;

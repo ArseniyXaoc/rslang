@@ -1,32 +1,80 @@
 { 
-    "team": [
-        {
-            "id": 0,
-            "userName": "Julia1 Gvozdeva1",
-            "userImg": "https://picsum.photos/200/300",
-            "userDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-            "userGitHub": "https://github.com/JuliaGvozdeva"
-        },
-        {
-            "id": 1,
-            "userName": "Julia2 Gvozdeva2",
-            "userImg": "https://picsum.photos/200/300",
-            "userDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-            "userGitHub": "https://github.com/JuliaGvozdeva"
-        },
-        {
-            "id": 2,
-            "userName": "Julia1 Gvozdeva1",
-            "userImg": "https://picsum.photos/200/300",
-            "userDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-            "userGitHub": "https://github.com/JuliaGvozdeva"
-        },
-        {
-            "id": 3,
-            "userName": "Julia2 Gvozdeva2",
-            "userImg": "https://picsum.photos/200/300",
-            "userDescription": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-            "userGitHub": "https://github.com/JuliaGvozdeva"
-        }
-    ]
+    "team": {
+        "ru": 
+        [
+            {
+                "id": 0,
+                "userName": "Арсений Бурячек",
+                "userImg": "arseniy",
+                "userDescription": "Развернул базу данных MongoDB, сделал деплой API, настроил базовый клиент - сервер, реализовал игра 'Спринт', реализовал взаимодействие игр со словорем и учебником, сделал часть markup страницы игр.",
+                "userGitHub": "https://github.com/ArseniyXaoc"
+            },
+            {
+                "id": 1,
+                "userName": "Илья Котов",
+                "userImg": "ilya",
+                "userDescription": "Реализовал регистрацию, авторизацию и деавторизацию пользователя (формы с валидацией, получение и хранение токена и данных). Реализовал страницу статистики и API для статистики на бэкенде. Обновил дизайн промо и главной страницы. Реализовал поиск по словам как допонительный функционал.",
+                "userGitHub": "https://github.com/Beljar"
+            },
+            {
+                "id": 2,
+                "userName": "Екатерина Матвеева",
+                "userImg": "kate",
+                "userDescription": "Сделала дизайн приложения, реализовала главное меню приложения, учебник и игру 'Висилица'.",
+                "userGitHub": "https://github.com/GrnTea"
+            },
+            {
+                "id": 3,
+                "userName": "Максим Киселев",
+                "userImg": "maksim",
+                "userDescription": "Реализовал игры 'Аудиовызов' и 'Саванна', а так же несколько общих компонентов.",
+                "userGitHub": "https://github.com/JuliaGvozdeva"
+            },
+            {
+                "id": 4,
+                "userName": "Юлия Гвоздева",
+                "userImg": "julia",
+                "userDescription": "Реализовала страницу с описанием команды, словарь и карточки слов для словаря и учебника.",
+                "userGitHub": "https://github.com/JuliaGvozdeva"
+            }
+        ],
+        "en": 
+        [
+            {
+                "id": 0,
+                "userName": "Arseniy Buryachek",
+                "userImg": "arseniy",
+                "userDescription": "Deployed MongoDB database, performed API deployment, set up a basic client-server, implemented 'Sprint' game, implemented games interaction with dictionary and tutorial, did some of the games page markup.",
+                "userGitHub": "https://github.com/JuliaGvozdeva"
+            },
+            {
+                "id": 1,
+                "userName": "Ilia Kotov",
+                "userImg": "ilya",
+                "userDescription": "Implemented registration, authorization and de-authorization of the user (forms with validation, receipt and storage of token and data). Implemented statistics page and API for statistics on the backend. Updated the design of the promo and the main page. Implemented word search as an additional functionality.",
+                "userGitHub": "https://github.com/Beljar"
+            },
+            {
+                "id": 2,
+                "userName": "Ekaterina Matveeva",
+                "userImg": "kate",
+                "userDescription": "Designed the application, implemented the main menu of the application, the tutorial and the Hangman game.",
+                "userGitHub": "https://github.com/GrnTea"
+            },
+            {
+                "id": 3,
+                "userName": "Maksim Kisialiou",
+                "userImg": "maksim",
+                "userDescription": "Implemented the games 'Audio Call' and 'Savannah', as well as several common components.",
+                "userGitHub": "https://github.com/conservativ007"
+            },
+            {
+                "id": 4,
+                "userName": "Julia Gvozdeva",
+                "userImg": "julia",
+                "userDescription": "Implemented team page, dictionary and word cards for dictionary and textbook.",
+                "userGitHub": "https://github.com/JuliaGvozdeva"
+            }
+        ]
+    }  
 }

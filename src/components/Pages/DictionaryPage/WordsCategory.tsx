@@ -5,15 +5,17 @@ import CardOfWord from "./components/CardForWord/CardForWord";
 import API_URL from "../../Constants/constants";
 
 type Props = {
-    user: any,
-    section: any,
-    filter: string
+  user: any,
+  section: any,
+  filter: string,
+  isLearnCategory: boolean
 }
 
 interface ICategory {
   user: any,
   section: any,
   filter: string
+  isLearnCategory: boolean
 }
 
 function getCards(token:string, page:number, sectionId:number, filter:string, userId:number, setCountPages, setListOfWords) {
@@ -39,7 +41,7 @@ function getCards(token:string, page:number, sectionId:number, filter:string, us
     .catch((error) => { console.log(error); });
 }
 
-const WordsFromCategory: React.FC<Props> = ({ user, section, filter }: ICategory) => {
+const WordsFromCategory: React.FC<Props> = ({ user, section, filter, isLearnCategory }: ICategory) => {
   const useStyles = DictionaryStyles();
   const [listOfWords, setListOfWords] = useState([]);
   const [countPages, setCountPages] = useState(0);
@@ -59,7 +61,7 @@ const WordsFromCategory: React.FC<Props> = ({ user, section, filter }: ICategory
     return listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} />);
   };
 
-  const renderOnePage = () => listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} />);
+  const renderOnePage = () => listOfWords.map((card:any) => <CardOfWord key={card._id} cardInfo={card} isMain={false} isLearnCategory={isLearnCategory} />);
 
   return (
     listOfWords

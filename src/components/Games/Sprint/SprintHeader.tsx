@@ -4,14 +4,23 @@ import {
 } from "@material-ui/icons";
 import useSound from "use-sound";
 import tada from "../../../assets/sound/tada.mp3";
+import { Button } from "@material-ui/core";
 
 // let int = null;
+interface ISprintHeader {
+  isVolume: boolean,
+  score: number,
+  setIsVolume: React.Dispatch<React.SetStateAction<boolean>>,
+  setFinish: React.Dispatch<React.SetStateAction<boolean>>,
+  setTime: React.Dispatch<React.SetStateAction<number>>,
+  time: number,
+}
 
-const SprintHeader = ({ isVolume, score, setFinish }:
-  { isVolume: boolean, score: number, setFinish: React.SetStateAction<boolean> }) => {
+const SprintHeader = ({
+  isVolume, score, setFinish, setIsVolume, time, setTime,
+}:ISprintHeader) => {
   const [playTada] = useSound(tada, { volume: 0.2 });
 
-  const [time, setTime] = useState(40);
   const [timeIn, setTimeIn] = useState();
 
   useEffect(() => {
@@ -20,7 +29,7 @@ const SprintHeader = ({ isVolume, score, setFinish }:
     }, 1000);
     setTimeIn(int);
     if (time === 0) {
-      playTada();
+      if (isVolume) playTada();
       clearInterval(int);
       setFinish(true);
     }
@@ -29,6 +38,11 @@ const SprintHeader = ({ isVolume, score, setFinish }:
       clearInterval(timeIn);
     };
   }, [time]);
+
+  function handleClick() {
+    if (isVolume) setIsVolume(false);
+    else setIsVolume(true);
+  }
 
   return (
     <div className="sprint__interface">
@@ -39,7 +53,8 @@ const SprintHeader = ({ isVolume, score, setFinish }:
         <Score />{score}
       </div>
       <div className="sprint__sound">
-        {isVolume ? <VolumeUp /> : <VolumeOff />}
+        {isVolume ? <Button onClick={handleClick}><VolumeUp /></Button>
+          : <Button onClick={handleClick}><VolumeOff /></Button>}
       </div>
     </div>
   );

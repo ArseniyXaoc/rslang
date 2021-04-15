@@ -1,8 +1,24 @@
-const LinearProgressStyles = {
-  width: "600px",
-  height: "5px",
-  margin: "0 auto",
-};
+let screenWidth;
+let lineWidth = 800;
+let LinearProgressStyles;
+
+window.addEventListener('resize', () => {
+  screenWidth = window.outerWidth;
+  
+  if(screenWidth >= 800){
+    lineWidth = 800;
+  } else if(screenWidth < 800){
+    lineWidth = 600;
+  }
+
+  LinearProgressStyles = {
+    width: `${lineWidth}px`,
+    height: "5px",
+    margin: "0 auto",
+  };
+})
+
+
 
 const SpeakerIconStyles = {
   fontSize: 100,
@@ -11,4 +27,9 @@ const SpeakerIconStyles = {
   zIndex: "1",
 };
 
-export { LinearProgressStyles, SpeakerIconStyles };
+const StartGameButtonStyle = {
+  backgroundColor: "#ff0b53",
+  color: "white",
+}
+
+export {LinearProgressStyles, SpeakerIconStyles, StartGameButtonStyle}

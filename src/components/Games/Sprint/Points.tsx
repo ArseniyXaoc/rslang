@@ -43,7 +43,7 @@ const Points = ({ bonus, checkbox }: { bonus: number, checkbox: boolean[] }) => 
     <div className="sprint__point">
       <div className={classes.root}>
         {checkbox.map((item, index) => (item
-          ? <HeartIcon key={Date.now() + index} style={right} /> : <HomeIcon key={Date.now() + index} color={wrong} />))}
+          ? <HeartIcon className="scale-up-center" key={Date.now() + index} style={right} /> : <HomeIcon className="scale-up-center" key={Date.now() + index} color={wrong} />))}
       </div>
       <div className="sprint__bonus">
         {bonus !== 0 && (<div> +{x} за слово </div>)}

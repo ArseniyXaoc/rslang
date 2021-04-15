@@ -9,19 +9,23 @@ export interface IButtons {
     en: {
         rightButton: string,
         wrongButton: string,
+        start: string,
       },
       ru: {
         rightButton: string,
         wrongButton: string,
+        start: string,
       },
 }
 export const Buttons: IButtons = {
   en: {
     rightButton: "Right",
     wrongButton: "Wrong",
+    start: "Get ready!",
   },
   ru: {
     rightButton: "Верно",
     wrongButton: "Неверно",
+    start: "Приготовьтесь!",
   },
 };

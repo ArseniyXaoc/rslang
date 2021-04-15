@@ -106,11 +106,11 @@ function setUserSettings(url:string, token:string, data:any) {
 
 function createCheckboxSettings(checkbox:any, name:string, toggleFunction: (value: React.ChangeEvent<HTMLInputElement>) => void) {
   return (
-        <FormControlLabel
-            key={checkbox.id}
-            control={<BlueCheckbox checked={checkbox.state} onChange={toggleFunction} name={checkbox.id} />}
-            label={name}
-        />
+      <FormControlLabel
+          key={checkbox.id}
+          control={<BlueCheckbox checked={checkbox.state} onChange={toggleFunction} name={checkbox.id} />}
+          label={name}
+      />
   );
 }
 
@@ -137,7 +137,7 @@ const LearnWordSettings: React.FC<Props> = ({
   }, [buttonsSettings, cardSettings]);
 
   return (
-    <div>
+    <div className={useStyles.settingsContainer}>
         <h2>{TEXTS[lang].mainTitle}</h2>
         <div className={useStyles.formsContainer}>
         <FormControl component="fieldset" className={useStyles.formControl}>

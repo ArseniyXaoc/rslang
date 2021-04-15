@@ -79,7 +79,7 @@ const DictionaryPage: React.FC<Props> = ({ lang, user }: IDictionaryProps) => {
               {TEXTS[lang].removedWords}
           </button>
       </div>
-      <WordsCategory user={user} section={sectionId} filter={filters[category]}/>
+      <WordsCategory user={user} section={sectionId} filter={filters[category]} isLearnCategory={category === "studying" ? true : false}/>
     </div> : <div className={useStyles.emptyTab}>User is not logged!</div>
   );
 };
